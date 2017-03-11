@@ -32,30 +32,35 @@ public class MeetingTest {
         try {
             new MeetingImpl(-1, "", contacts);
         } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
             assertEquals("ID must be greater than zero", e.getMessage());
         }
 
         try {
             new MeetingImpl(0, "", contacts);
         } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
             assertEquals("ID must be greater than zero", e.getMessage());
         }
 
         try {
             new MeetingImpl(1, null, contacts);
         } catch (Exception e) {
+            assertTrue(e instanceof NullPointerException);
             assertEquals("date cannot be null", e.getMessage());
         }
 
         try {
             new MeetingImpl(1, nowDate, null);
         } catch (Exception e) {
+            assertTrue(e instanceof NullPointerException);
             assertEquals("contacts cannot be null", e.getMessage());
         }
 
         try {
             new MeetingImpl(1, nowDate, new HashSet<Contact>());
         } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
             assertEquals("contacts set cannot be empty", e.getMessage());
         }
 
