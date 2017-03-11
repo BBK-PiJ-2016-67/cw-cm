@@ -16,67 +16,61 @@ public class ContactTest {
     }
 
     @Test
-    public void testContactConstructorName() {
+    public void testContactConstructorSetIDName() {
         try {
-            new ContactImpl("name");
+            new ContactImpl(-1, "");
         } catch (Exception e) {
-            fail(e.getMessage());
+            assertEquals("ID must be greater than zero", e.getMessage());
         }
-    }
 
-    @Test
-    public void testContactConstructorSetName() {
-        Contact sue = new ContactImpl("sue");
-        assertEquals("sue", sue.getName());
-    }
-
-    @Test
-    public void testContactConstructorNameNotes() {
         try {
-            new ContactImpl("name", "notes");
+            new ContactImpl(0, "");
         } catch (Exception e) {
-            fail(e.getMessage());
+            assertEquals("ID must be greater than zero", e.getMessage());
         }
+
+        try {
+            new ContactImpl(1, null);
+        } catch (Exception e) {
+            assertEquals("name cannot be null", e.getMessage());
+        }
+
+        Contact joe = new ContactImpl(1, "joe");
+        assertEquals(1, joe.getId());
+        assertEquals("joe", joe.getName());
+        assertEquals("", joe.getNotes());
     }
 
     @Test
-    public void testContactConstructorSetNameNotes() {
-        Contact sue = new ContactImpl("sue", "notes1");
-        assertEquals("sue", sue.getName());
-        assertEquals("notes1", sue.getNotes());
-    }
+    public void testContactConstructorSetIDNameNotes() {
+        try {
+            new ContactImpl(1, "joe", null);
+        } catch (Exception e) {
+            assertEquals("notes cannot be null", e.getMessage());
+        }
 
-    @Test
-    public void testGetNotesNone() {
-        Contact sue = new ContactImpl("sue");
-        assertEquals("", sue.getNotes());
+        Contact joe = new ContactImpl(1, "joe", "good meeting");
+        assertEquals(1, joe.getId());
+        assertEquals("joe", joe.getName());
+        assertEquals("good meeting", joe.getNotes());
     }
 
     @Test
     public void testAddNotesSingle() {
-        Contact sue = new ContactImpl("sue");
-        sue.addNotes("notes1");
-        assertEquals("notes1", sue.getNotes());
+        Contact joe = new ContactImpl(1, "joe");
+        assertEquals("", joe.getNotes());
+        joe.addNotes("good meeting");
+        assertEquals("good meeting", joe.getNotes());
     }
 
     @Test
     public void testAddNotesMultiple() {
-        Contact sue = new ContactImpl("sue", "notes1");
-        sue.addNotes("notes2");
-        sue.addNotes("notes3");
-        String returned = sue.getNotes();
-
-        assertTrue(returned.contains("notes1"));
-        assertTrue(returned.contains("notes2"));
-        assertTrue(returned.contains("notes3"));
-    }
-
-    @Test
-    public void testContactUniqueIds() {
-        Contact jim = new ContactImpl("jim");
-        Contact mike = new ContactImpl("mike");
-
-        assertThat(jim.getId(), is(not(equalTo(mike.getId()))));
+        Contact joe = new ContactImpl(1, "joe");
+        assertEquals("", joe.getNotes());
+        joe.addNotes("good meeting");
+        joe.addNotes("best business");
+        assertTrue(joe.getNotes().contains("good meeting"));
+        assertTrue(joe.getNotes().contains("best business"));
     }
 
 }
