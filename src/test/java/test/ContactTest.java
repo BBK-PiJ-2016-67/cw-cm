@@ -59,7 +59,6 @@ public class ContactTest {
         assertEquals("notes1", sue.getNotes());
     }
 
-
     @Test
     public void testAddNotesMultiple() {
         Contact sue = new ContactImpl("sue", "notes1");
