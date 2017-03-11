@@ -8,41 +8,71 @@ import spec.Contact;
  * @author BBK-PiJ-2016-67
  */
 public class ContactImpl implements Contact {
-    // TODO - two constructors
-    /** The implementation of this interface must have two constructors. The most general constructor
-        must have three parameters: int, String, String. The first one corresponds to the ID
-        provided by the ContactManager, the next one corresponds to the name, and the last one
-        corresponds to the initial set of notes about the contact. Another, more restricted constructor
-        must have two parameters only: ID and name. If the ID provided is zero or negative, a
-        IllegalArgumentException must be thrown. If any of the references / pointers passed as
-        parameters to the constructor is null, a NullPointerException must be thrown.
-    */
+    private int ID;
+    private String name;
+    private String notes = "";
+
+    /**
+     * Initialises the ContactImpl class.
+     *
+     * @param ID       the ID of the contact
+     * @param name     the name of the contact
+     */
+    public ContactImpl(int ID, String name) {
+        this(ID, name, "");
+    }
+
+    /**
+     * Initialises the ContactImpl class.
+     *
+     * @param ID       the ID of the contact
+     * @param name     the name of the contact
+     * @param notes    initial notes about the contact
+     */
+    public ContactImpl(int ID, String name, String notes) {
+        if (ID <= 0) {
+            throw new IllegalArgumentException("ID must be greater than zero");
+        } else if (name == null) {
+            throw new NullPointerException("name cannot be null");
+        } else if (notes == null) {
+            throw new NullPointerException("notes cannot be null");
+        }
+        this.ID = ID;
+        this.name = name;
+        this.notes = notes;
+    }
 
     /**
      * {@inheritDoc}.
      */
     public int getId() {
-        return 0;
+        return this.ID;
     }
 
     /**
      * {@inheritDoc}.
      */
     public String getName() {
-        return "";
+        return this.name;
     }
 
     /**
      * {@inheritDoc}.
      */
     public String getNotes() {
-        return "";
+        return this.notes;
     }
 
     /**
      * {@inheritDoc}.
      */
     public void addNotes(String note) {
-
+        if (note == null) {
+            throw new NullPointerException("note cannot be null");
+        }
+        if (this.notes != "") {
+            this.notes += ", ";
+        }
+        this.notes += note;
     }
 }
