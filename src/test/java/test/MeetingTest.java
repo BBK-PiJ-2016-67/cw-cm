@@ -61,10 +61,10 @@ public class MeetingTest {
             new MeetingImpl(1, nowDate, new HashSet<Contact>());
         } catch (Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
-            assertEquals("contacts set cannot be empty", e.getMessage());
+            assertEquals("contacts cannot be empty", e.getMessage());
         }
 
-        MeetingImpl meeting = new MeetingImpl(1, nowDate, contacts);
+        Meeting meeting = new MeetingImpl(1, nowDate, contacts);
         assertEquals(1, meeting.getId());
         assertEquals(nowDate, meeting.getDate());
         assertEquals(contacts, meeting.getContacts());
@@ -82,7 +82,7 @@ public class MeetingTest {
     public void testContactsImmutableFromOutsideObject() {
         Meeting meeting = new MeetingImpl(1, nowDate, contacts);
         Set<Contact> contacts = meeting.getContacts();
-        contacts.add(new MockContactImpl());
+        contacts.add(new MockContactImpl(1, "", ""));
         assertFalse(contacts.size() == meeting.getContacts().size());
     }
 
