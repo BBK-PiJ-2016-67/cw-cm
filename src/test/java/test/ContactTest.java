@@ -20,18 +20,21 @@ public class ContactTest {
         try {
             new ContactImpl(-1, "");
         } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
             assertEquals("ID must be greater than zero", e.getMessage());
         }
 
         try {
             new ContactImpl(0, "");
         } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
             assertEquals("ID must be greater than zero", e.getMessage());
         }
 
         try {
             new ContactImpl(1, null);
         } catch (Exception e) {
+            assertTrue(e instanceof NullPointerException);
             assertEquals("name cannot be null", e.getMessage());
         }
 
@@ -46,6 +49,7 @@ public class ContactTest {
         try {
             new ContactImpl(1, "joe", null);
         } catch (Exception e) {
+            assertTrue(e instanceof NullPointerException);
             assertEquals("notes cannot be null", e.getMessage());
         }
 
