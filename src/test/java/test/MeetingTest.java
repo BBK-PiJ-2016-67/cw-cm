@@ -23,31 +23,51 @@ public class MeetingTest {
     public void setUp() {
         nowDate = Calendar.getInstance();
         contacts = new HashSet<Contact>();
-        contacts.add(new MockContactImpl());
-        contacts.add(new MockContactImpl());
+        contacts.add(new MockContactImpl(1, "", ""));
+        contacts.add(new MockContactImpl(1, "", ""));
     }
 
     @Test
-    public void testConstructor() {
+    public void testMeetingConstructor() {
         try {
-            new MeetingImpl(nowDate, contacts);
+            new MeetingImpl(-1, "", contacts);
         } catch (Exception e) {
-            fail(e.getMessage());
+            assertEquals("ID must be greater than zero", e.getMessage());
         }
-    }
 
-    @Test
-    public void testConstructorSets() {
-        Meeting meeting = new MeetingImpl(nowDate, contacts);
+        try {
+            new MeetingImpl(0, "", contacts);
+        } catch (Exception e) {
+            assertEquals("ID must be greater than zero", e.getMessage());
+        }
 
-        assertThat(meeting.getId(), is(notNullValue()));
-        assertEquals(meeting.getDate(), nowDate);
-        assertEquals(meeting.getContacts(), contacts);
+        try {
+            new MeetingImpl(1, null, contacts);
+        } catch (Exception e) {
+            assertEquals("date cannot be null", e.getMessage());
+        }
+
+        try {
+            new MeetingImpl(1, nowDate, null);
+        } catch (Exception e) {
+            assertEquals("contacts cannot be null", e.getMessage());
+        }
+
+        try {
+            new MeetingImpl(1, nowDate, new HashSet<Contact>());
+        } catch (Exception e) {
+            assertEquals("contacts set cannot be empty", e.getMessage());
+        }
+
+        MeetingImpl meeting = new MeetingImpl(1, nowDate, contacts);
+        assertEquals(1, meeting.getId());
+        assertEquals(nowDate, meeting.getDate());
+        assertEquals(contacts, meeting.getContacts());
     }
 
     @Test
     public void testImmutableDate() {
-        Meeting meeting = new MeetingImpl(nowDate, contacts);
+        Meeting meeting = new MeetingImpl(1, nowDate, contacts);
         Calendar date = meeting.getDate();
         date.add(Calendar.YEAR, 1);
         assertFalse(date.get(Calendar.YEAR) == meeting.getDate().get(Calendar.YEAR));
@@ -55,7 +75,7 @@ public class MeetingTest {
 
     @Test
     public void testContactsImmutableFromOutsideObject() {
-        Meeting meeting = new MeetingImpl(nowDate, contacts);
+        Meeting meeting = new MeetingImpl(1, nowDate, contacts);
         Set<Contact> contacts = meeting.getContacts();
         contacts.add(new MockContactImpl());
         assertFalse(contacts.size() == meeting.getContacts().size());
@@ -63,9 +83,8 @@ public class MeetingTest {
 
     @Test
     public void testUniqueIds() {
-        Meeting meetingOne = new MeetingImpl(nowDate, contacts);
-        Meeting meetingTwo = new MeetingImpl(nowDate, contacts);
-
+        Meeting meetingOne = new MeetingImpl(1, nowDate, contacts);
+        Meeting meetingTwo = new MeetingImpl(2, nowDate, contacts);
         assertThat(meetingOne.getId(), is(not(equalTo(meetingTwo.getId()))));
     }
 }
