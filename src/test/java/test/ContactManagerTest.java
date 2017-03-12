@@ -97,4 +97,34 @@ public class ContactManagerTest {
         }
     }
 
+    @Test
+    public void testGetFutureMeeting() {
+        contactManager.addFutureMeeting(contacts, futureDate);
+        contactManager.addNewPastMeeting(contacts, pastDate, "good meeting");
+
+        try {
+            contactManager.getFutureMeeting(-1);
+        } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
+            assertEquals("id must be greater than 0", e.getMessage());
+        }
+
+        try {
+            contactManager.getFutureMeeting(0);
+        } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
+            assertEquals("id must be greater than 0", e.getMessage());
+        }
+
+        assertTrue(contactManager.getFutureMeeting(1) instanceof FutureMeetingImpl);
+        assertEquals(null, contactManager.getFutureMeeting(3));
+
+        try {
+            contactManager.getFutureMeeting(2);
+        } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
+            assertEquals("The meeting with this ID is happening in the past", e.getMessage());
+        }
+    }
+
 }
