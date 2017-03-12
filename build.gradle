@@ -1,5 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'jacoco'  
+apply plugin: 'findbugs'
+apply plugin: 'pmd'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -16,4 +18,25 @@ jacocoTestReport {
     reports {
         html.destination "${buildDir}/reports/coverage"
     }
+}
+
+findbugs {
+    ignoreFailures = true
+    toolVersion = "2.0.1"
+    sourceSets = [sourceSets.main]
+    reportsDir = file("$project.buildDir/reports/findbugs")
+    effort = "max"
+}
+
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
+
+pmd {
+    ignoreFailures = true
+    sourceSets = [sourceSets.main]
+    reportsDir = file("$project.buildDir/reports/pmd")
 }
