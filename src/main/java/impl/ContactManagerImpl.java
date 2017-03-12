@@ -105,6 +105,17 @@ public final class ContactManagerImpl implements ContactManager {
      * {@inheritDoc}.
      */
     public int addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
+        if (contacts == null) {
+            throw new NullPointerException("contacts cannot be null");
+        } else if (contacts.isEmpty()) {
+            throw new IllegalArgumentException("contacts cannot be empty");
+        } else if (date == null) {
+            throw new NullPointerException("date cannot be null");
+        } else if (date.after(Calendar.getInstance())) {
+            throw new IllegalArgumentException("date cannot be in the future");
+        } else if (text == null) {
+            throw new NullPointerException("text cannot be null");
+        }
         int id = this.meetings.size() + 1;
         PastMeeting meeting = new PastMeetingImpl(id, date, contacts, text);
         this.meetings.add(meeting);
