@@ -3,6 +3,7 @@ package test;
 import impl.MockContactImpl;
 import impl.ContactManagerImpl;
 import impl.FutureMeetingImpl;
+import impl.PastMeetingImpl;
 import org.junit.Before;
 import org.junit.Test;
 import spec.*;
@@ -119,13 +120,25 @@ public class ContactManagerTest {
 
         assertTrue(contactManager.getFutureMeeting(1) instanceof FutureMeetingImpl);
         assertEquals(null, contactManager.getFutureMeeting(3));
-
+        
         try {
             contactManager.getFutureMeeting(2);
         } catch (Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
             assertEquals("The meeting with this ID is happening in the past", e.getMessage());
         }
+    }
+
+    @Test
+    public void testGetMeeting() {
+        contactManager.addFutureMeeting(contacts, futureDate);
+        contactManager.addNewPastMeeting(contacts, pastDate, "good meeting");
+
+        assertEquals(null, contactManager.getMeeting(-1));
+        assertEquals(null, contactManager.getMeeting(0));
+        assertTrue(contactManager.getMeeting(1) instanceof FutureMeetingImpl);
+        assertTrue(contactManager.getMeeting(2) instanceof PastMeetingImpl);
+        assertEquals(null, contactManager.getMeeting(3));
     }
 
 }
