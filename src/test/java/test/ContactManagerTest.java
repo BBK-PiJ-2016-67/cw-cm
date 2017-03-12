@@ -199,7 +199,7 @@ public class ContactManagerTest {
             contactManager.addNewContact("", "good contact");
         } catch (Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
-            assertEquals("name cannot be empty string", e.getMessage());
+            assertEquals("name cannot be empty", e.getMessage());
         }
 
         try {
@@ -213,7 +213,7 @@ public class ContactManagerTest {
             contactManager.addNewContact("joe", "");
         } catch (Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
-            assertEquals("notes cannot be empty string", e.getMessage());
+            assertEquals("notes cannot be empty", e.getMessage());
         }
 
         assertEquals(1, contactManager.addNewContact("joe", "good contact"));

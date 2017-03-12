@@ -18,14 +18,14 @@ public class ContactTest {
     @Test
     public void testContactConstructorSetIDName() {
         try {
-            new ContactImpl(-1, "");
+            new ContactImpl(-1, "joe");
         } catch (Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
             assertEquals("ID must be greater than zero", e.getMessage());
         }
 
         try {
-            new ContactImpl(0, "");
+            new ContactImpl(0, "joe");
         } catch (Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
             assertEquals("ID must be greater than zero", e.getMessage());

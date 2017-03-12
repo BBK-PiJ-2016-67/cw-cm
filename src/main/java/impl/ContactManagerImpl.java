@@ -18,6 +18,7 @@ import java.util.Set;
  * @author BBK-PiJ-2016-67
  */
 public final class ContactManagerImpl implements ContactManager {
+    private HashSet<Contact> contacts = new HashSet<Contact>();
     private HashSet<Meeting> meetings = new HashSet<Meeting>();
 
     /**
@@ -121,7 +122,15 @@ public final class ContactManagerImpl implements ContactManager {
      * {@inheritDoc}.
      */
     public int addNewContact(String name, String notes) {
-        return 5;
+        int id = this.contacts.size() + 1;
+        Contact contact = new ContactImpl(id, name, notes);
+        if (name.isEmpty()) {
+            throw new IllegalArgumentException("name cannot be empty");
+        } else if (notes.isEmpty()) {
+            throw new IllegalArgumentException("notes cannot be empty");
+        }
+        this.contacts.add(contact);
+        return id;
     }
 
     /**
