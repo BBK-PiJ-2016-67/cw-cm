@@ -153,7 +153,21 @@ public final class ContactManagerImpl implements ContactManager {
      * {@inheritDoc}.
      */
     public Set<Contact> getContacts(int... ids) {
-        return new HashSet<Contact>();
+        if (ids == null) {
+            throw new IllegalArgumentException("ids cannot be null");
+        }
+        HashSet<Contact> contacts = new HashSet<Contact>();
+        for (Contact contact : this.contacts) {
+            for (int id : ids) {
+                if (id == contact.getId()) {
+                    contacts.add(contact);
+                }
+            }
+        }
+        if (ids.length != contacts.size()) {
+            throw new IllegalArgumentException("contact does not exist");
+        }
+        return contacts;
     }
 
     /**
