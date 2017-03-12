@@ -179,11 +179,30 @@ public class ContactManagerTest {
 
     @Test
     public void testAddMeetingNotes() {
-        // null pointer notes null
-        // illegal if date future
-        // illegal meeting doesn't exist
-        // convert futuretopast
-        // return pastmeeting
+        contactManager.addFutureMeeting(contacts, futureDate);
+
+        try {
+            contactManager.addMeetingNotes(1, null);
+        } catch (Exception e) {
+            assertTrue(e instanceof NullPointerException);
+            assertEquals("text cannot be null", e.getMessage());
+        }
+
+        try {
+            contactManager.addMeetingNotes(1, "good meeting");
+        } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
+            assertEquals("cannot add notes to future meeting", e.getMessage());
+        }
+
+        try {
+            contactManager.addMeetingNotes(3, "good meeting");
+        } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
+            assertEquals("meeting not found", e.getMessage());
+        }
+
+        assertTrue(contactManager.addMeetingNotes(2, "good meeting") instanceof PastMeetingImpl);
     }
 
     @Test
