@@ -7,9 +7,9 @@ import spec.Contact;
  *
  * @author BBK-PiJ-2016-67
  */
-public class ContactImpl implements Contact {
-    private int ID;
-    private String name;
+public final class ContactImpl implements Contact {
+    private final int ID;
+    private final String name;
     private String notes = "";
 
     /**
