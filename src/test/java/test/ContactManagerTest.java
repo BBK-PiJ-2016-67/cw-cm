@@ -31,8 +31,8 @@ public class ContactManagerTest {
         futureDate = Calendar.getInstance();
         futureDate.add(Calendar.YEAR, 1);
         contacts = new HashSet<Contact>();
-        contacts.add(new MockContactImpl(1, "", ""));
-        contacts.add(new MockContactImpl(1, "", ""));
+        contacts.add(new MockContactImpl(1, "joe", ""));
+        contacts.add(new MockContactImpl(1, "ben", ""));
     }
 
     @Test
@@ -221,9 +221,21 @@ public class ContactManagerTest {
 
     @Test
     public void testGetContacts() {
-        // null if name null
-        // all if name empty string
-        // return list
+        try {
+            String name = null;
+            contactManager.getContacts(name);
+        } catch (Exception e) {
+            assertTrue(e instanceof NullPointerException);
+            assertEquals("name cannot be null", e.getMessage());
+        }
+
+        assertEquals(2, contactManager.getContacts("").size());
+
+        assertEquals(1, contactManager.getContacts("joe").size());
+
+        assertEquals(1, contactManager.getContacts("ben").size());
+
+        assertEquals(0, contactManager.getContacts("sam").size());
     }
 
     @Test
