@@ -37,6 +37,5 @@ tasks.withType(FindBugs) {
 
 pmd {
     ignoreFailures = true
-    sourceSets = [sourceSets.main]
     reportsDir = file("$project.buildDir/reports/pmd")
 }

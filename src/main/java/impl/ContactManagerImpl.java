@@ -142,7 +142,7 @@ public final class ContactManagerImpl implements ContactManager {
         }
         HashSet<Contact> contacts = new HashSet<Contact>();
         for (Contact contact : this.contacts) {
-            if (name.isEmpty() || name == contact.getName()) {
+            if (name.isEmpty() || name.equals(contact.getName())) {
                 contacts.add(contact);
             }
         }

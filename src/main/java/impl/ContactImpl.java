@@ -70,7 +70,7 @@ public final class ContactImpl implements Contact {
         if (note == null) {
             throw new NullPointerException("note cannot be null");
         }
-        if (this.notes != "") {
+        if (!this.notes.equals("")) {
             this.notes += ", ";
         }
         this.notes += note;
