@@ -13,9 +13,9 @@ import java.util.Set;
  * @author BBK-PiJ-2016-67
  */
 public abstract class MeetingImpl implements Meeting {
-    private int ID;
-    private Calendar date;
-    private HashSet<Contact> contacts;
+    private final int ID;
+    private final Calendar date;
+    private final HashSet<Contact> contacts;
 
     /**
      * Initialises the MeetingImpl class.
@@ -32,7 +32,7 @@ public abstract class MeetingImpl implements Meeting {
         } else if (contacts == null) {
             throw new NullPointerException("contacts cannot be null");
         } else if (contacts.isEmpty()) {
-            throw new NullPointerException("contacts cannot be empty");
+            throw new IllegalArgumentException("contacts cannot be empty");
         }
         this.ID = ID;
         this.date = date;
@@ -50,13 +50,17 @@ public abstract class MeetingImpl implements Meeting {
      * {@inheritDoc}.
      */
     public Calendar getDate() {
-        return this.date;
+        Calendar date = Calendar.getInstance();
+        date.setTime(this.date.getTime());
+        return date;
     }
 
     /**
      * {@inheritDoc}.
      */
     public Set<Contact> getContacts() {
-        return this.contacts;
+        HashSet<Contact> contacts = new HashSet<Contact>();
+        contacts.addAll(this.contacts);
+        return contacts;
     }
 }

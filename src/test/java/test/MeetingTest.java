@@ -1,6 +1,6 @@
 package test;
 
-import impl.MeetingImpl;
+import impl.FutureMeetingImpl;
 import impl.MockContactImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 public class MeetingTest {
 
     Calendar nowDate;
-    Set<Contact> contacts;
+    HashSet<Contact> contacts;
 
     @Before
     public void setUp() {
@@ -30,41 +30,41 @@ public class MeetingTest {
     @Test
     public void testMeetingConstructor() {
         try {
-            new MeetingImpl(-1, "", contacts);
+            new FutureMeetingImpl(-1, nowDate, contacts);
         } catch (Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
             assertEquals("ID must be greater than zero", e.getMessage());
         }
 
         try {
-            new MeetingImpl(0, "", contacts);
+            new FutureMeetingImpl(0, nowDate, contacts);
         } catch (Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
             assertEquals("ID must be greater than zero", e.getMessage());
         }
 
         try {
-            new MeetingImpl(1, null, contacts);
+            new FutureMeetingImpl(1, null, contacts);
         } catch (Exception e) {
             assertTrue(e instanceof NullPointerException);
             assertEquals("date cannot be null", e.getMessage());
         }
 
         try {
-            new MeetingImpl(1, nowDate, null);
+            new FutureMeetingImpl(1, nowDate, null);
         } catch (Exception e) {
             assertTrue(e instanceof NullPointerException);
             assertEquals("contacts cannot be null", e.getMessage());
         }
 
         try {
-            new MeetingImpl(1, nowDate, new HashSet<Contact>());
+            new FutureMeetingImpl(1, nowDate, new HashSet<Contact>());
         } catch (Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
             assertEquals("contacts cannot be empty", e.getMessage());
         }
 
-        Meeting meeting = new MeetingImpl(1, nowDate, contacts);
+        Meeting meeting = new FutureMeetingImpl(1, nowDate, contacts);
         assertEquals(1, meeting.getId());
         assertEquals(nowDate, meeting.getDate());
         assertEquals(contacts, meeting.getContacts());
@@ -72,7 +72,7 @@ public class MeetingTest {
 
     @Test
     public void testImmutableDate() {
-        Meeting meeting = new MeetingImpl(1, nowDate, contacts);
+        Meeting meeting = new FutureMeetingImpl(1, nowDate, contacts);
         Calendar date = meeting.getDate();
         date.add(Calendar.YEAR, 1);
         assertFalse(date.get(Calendar.YEAR) == meeting.getDate().get(Calendar.YEAR));
@@ -80,7 +80,7 @@ public class MeetingTest {
 
     @Test
     public void testContactsImmutableFromOutsideObject() {
-        Meeting meeting = new MeetingImpl(1, nowDate, contacts);
+        Meeting meeting = new FutureMeetingImpl(1, nowDate, contacts);
         Set<Contact> contacts = meeting.getContacts();
         contacts.add(new MockContactImpl(1, "", ""));
         assertFalse(contacts.size() == meeting.getContacts().size());
@@ -88,8 +88,8 @@ public class MeetingTest {
 
     @Test
     public void testUniqueIds() {
-        Meeting meetingOne = new MeetingImpl(1, nowDate, contacts);
-        Meeting meetingTwo = new MeetingImpl(2, nowDate, contacts);
+        Meeting meetingOne = new FutureMeetingImpl(1, nowDate, contacts);
+        Meeting meetingTwo = new FutureMeetingImpl(2, nowDate, contacts);
         assertThat(meetingOne.getId(), is(not(equalTo(meetingTwo.getId()))));
     }
 }
