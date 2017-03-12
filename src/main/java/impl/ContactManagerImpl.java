@@ -121,7 +121,7 @@ public final class ContactManagerImpl implements ContactManager {
      * {@inheritDoc}.
      */
     public int addNewContact(String name, String notes) {
-        return 1;
+        return 5;
     }
 
     /**

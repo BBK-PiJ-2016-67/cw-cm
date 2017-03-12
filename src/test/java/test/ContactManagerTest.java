@@ -141,4 +141,101 @@ public class ContactManagerTest {
         assertEquals(null, contactManager.getMeeting(3));
     }
 
+    @Test
+    public void testGetFutureMeetingList() {
+        // get list
+        // return empty list
+        // chronologically sorted
+        // no dupes
+        // nullpointer if contact null
+        // illegal argument if not in list of contacts
+    }
+
+    @Test
+    public void testGetMeetingListOn() {
+        // return list
+        // return empty list
+        // nullpointer null date
+        // chronolog
+        // no dupes
+    }
+
+    @Test
+    public void testGetPastMeetingListFor() {
+        // get list
+        // return empty list
+        // chronologically sorted
+        // no dupes
+        // nullpointer if contact null
+        // illegal argument if not in list of contacts
+    }
+
+    @Test
+    public void testAddNewPastMeeting() {
+        // nullpointer args null
+        // illage argument if contacts empty, contact doesnt exist or date in future
+        // return id
+    }
+
+    @Test
+    public void testAddMeetingNotes() {
+        // null pointer notes null
+        // illegal if date future
+        // illegal meeting doesn't exist
+        // convert futuretopast
+        // return pastmeeting
+    }
+
+    @Test
+    public void testAddNewContact() {
+        try {
+            contactManager.addNewContact(null, "good contact");
+        } catch (Exception e) {
+            assertTrue(e instanceof NullPointerException);
+            assertEquals("name cannot be null", e.getMessage());
+        }
+
+        try {
+            contactManager.addNewContact("", "good contact");
+        } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
+            assertEquals("name cannot be empty string", e.getMessage());
+        }
+
+        try {
+            contactManager.addNewContact("joe", null);
+        } catch (Exception e) {
+            assertTrue(e instanceof NullPointerException);
+            assertEquals("notes cannot be null", e.getMessage());
+        }
+
+        try {
+            contactManager.addNewContact("joe", "");
+        } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
+            assertEquals("notes cannot be empty string", e.getMessage());
+        }
+
+        assertEquals(1, contactManager.addNewContact("joe", "good contact"));
+    }
+
+    @Test
+    public void testGetContacts() {
+        // null if name null
+        // all if name empty string
+        // return list
+    }
+
+    @Test
+    public void testGetContactsWithIds() {
+        // illegal if no ids or if ids aren't for contacts
+        // get one, get multiple
+        // return list
+    }
+
+    @Test
+    public void testFlush() {
+        // save data to disk :/
+    }
+
 }
