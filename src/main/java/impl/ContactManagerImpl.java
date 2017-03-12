@@ -137,7 +137,16 @@ public final class ContactManagerImpl implements ContactManager {
      * {@inheritDoc}.
      */
     public Set<Contact> getContacts(String name) {
-        return new HashSet<Contact>();
+        if (name == null) {
+            throw new NullPointerException("name cannot be null");
+        }
+        HashSet<Contact> contacts = new HashSet<Contact>();
+        for (Contact contact : this.contacts) {
+            if (name.isEmpty() || name == contact.getName()) {
+                contacts.add(contact);
+            }
+        }
+        return contacts;
     }
 
     /**

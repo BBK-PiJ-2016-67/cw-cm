@@ -221,6 +221,9 @@ public class ContactManagerTest {
 
     @Test
     public void testGetContacts() {
+        contactManager.addNewContact("joe", "good contact");
+        contactManager.addNewContact("ben", "bad contact");
+
         try {
             String name = null;
             contactManager.getContacts(name);
@@ -230,11 +233,8 @@ public class ContactManagerTest {
         }
 
         assertEquals(2, contactManager.getContacts("").size());
-
         assertEquals(1, contactManager.getContacts("joe").size());
-
         assertEquals(1, contactManager.getContacts("ben").size());
-
         assertEquals(0, contactManager.getContacts("sam").size());
     }
 
