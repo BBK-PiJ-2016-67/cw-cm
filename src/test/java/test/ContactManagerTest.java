@@ -67,4 +67,34 @@ public class ContactManagerTest {
         assertEquals(contacts, contactManager.getMeeting(1).getContacts());
     }
 
+    @Test
+    public void testGetPastMeeting() {
+        contactManager.addNewPastMeeting(contacts, pastDate, "good meeting");
+        contactManager.addFutureMeeting(contacts, futureDate);
+
+        try {
+            contactManager.getPastMeeting(-1);
+        } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
+            assertEquals("id must be greater than 0", e.getMessage());
+        }
+
+        try {
+            contactManager.getPastMeeting(0);
+        } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
+            assertEquals("id must be greater than 0", e.getMessage());
+        }
+
+        assertEquals("good meeting", contactManager.getPastMeeting(1).getNotes());
+        assertEquals(null, contactManager.getPastMeeting(3));
+
+        try {
+            contactManager.getPastMeeting(2);
+        } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
+            assertEquals("The meeting with this ID is happening in the future", e.getMessage());
+        }
+    }
+
 }
