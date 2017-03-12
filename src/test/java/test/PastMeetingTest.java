@@ -5,18 +5,19 @@ import impl.MockContactImpl;
 import org.junit.Before;
 import org.junit.Test;
 import spec.Contact;
-import spec.Meeting;
+import spec.PastMeeting;
 
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 public class PastMeetingTest {
 
     Calendar pastDate;
-    Set<Contact> contacts;
+    HashSet<Contact> contacts;
 
     @Before
     public void setUp() {
@@ -30,14 +31,14 @@ public class PastMeetingTest {
     @Test
     public void testMeetingConstructor() {
         try {
-            new PastMeetingImpl(-1, nowDate, contacts, "");
+            new PastMeetingImpl(-1, pastDate, contacts, "");
         } catch (Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
             assertEquals("ID must be greater than zero", e.getMessage());
         }
 
         try {
-            new PastMeetingImpl(0, nowDate, contacts, "");
+            new PastMeetingImpl(0, pastDate, contacts, "");
         } catch (Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
             assertEquals("ID must be greater than zero", e.getMessage());
@@ -51,36 +52,36 @@ public class PastMeetingTest {
         }
 
         try {
-            new PastMeetingImpl(1, nowDate, null, "");
+            new PastMeetingImpl(1, pastDate, null, "");
         } catch (Exception e) {
             assertTrue(e instanceof NullPointerException);
             assertEquals("contacts cannot be null", e.getMessage());
         }
 
         try {
-            new PastMeetingImpl(1, nowDate, new HashSet<Contact>(), "");
+            new PastMeetingImpl(1, pastDate, new HashSet<Contact>(), "");
         } catch (Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
             assertEquals("contacts cannot be empty", e.getMessage());
         }
 
         try {
-            new PastMeetingImpl(1, nowDate, contacts, null);
+            new PastMeetingImpl(1, pastDate, contacts, null);
         } catch (Exception e) {
             assertTrue(e instanceof NullPointerException);
-            assertEquals("notes cannot be empty", e.getMessage());
+            assertEquals("notes cannot be null", e.getMessage());
         }
 
-        Meeting meeting = new PastMeetingImpl(1, nowDate, contacts, "");
+        PastMeeting meeting = new PastMeetingImpl(1, pastDate, contacts, "");
         assertEquals(1, meeting.getId());
-        assertEquals(nowDate, meeting.getDate());
+        assertEquals(pastDate, meeting.getDate());
         assertEquals(contacts, meeting.getContacts());
         assertEquals("", meeting.getNotes());
     }
 
     @Test
     public void testImmutableDate() {
-        Meeting meeting = new PastMeetingImpl(1, nowDate, contacts);
+        PastMeeting meeting = new PastMeetingImpl(1, pastDate, contacts, "");
         Calendar date = meeting.getDate();
         date.add(Calendar.YEAR, 1);
         assertFalse(date.get(Calendar.YEAR) == meeting.getDate().get(Calendar.YEAR));
@@ -88,7 +89,7 @@ public class PastMeetingTest {
 
     @Test
     public void testContactsImmutableFromOutsideObject() {
-        Meeting meeting = new PastMeetingImpl(1, nowDate, contacts);
+        PastMeeting meeting = new PastMeetingImpl(1, pastDate, contacts, "");
         Set<Contact> contacts = meeting.getContacts();
         contacts.add(new MockContactImpl(1, "", ""));
         assertFalse(contacts.size() == meeting.getContacts().size());
@@ -96,25 +97,9 @@ public class PastMeetingTest {
 
     @Test
     public void testUniqueIds() {
-        Meeting meetingOne = new PastMeetingImpl(1, nowDate, contacts);
-        Meeting meetingTwo = new PastMeetingImpl(2, nowDate, contacts);
+        PastMeeting meetingOne = new PastMeetingImpl(1, pastDate, contacts, "");
+        PastMeeting meetingTwo = new PastMeetingImpl(2, pastDate, contacts, "");
         assertThat(meetingOne.getId(), is(not(equalTo(meetingTwo.getId()))));
-    }
-
-    @Test
-    public void testAddNotesSingle() {
-        Meeting meeting = new PastMeetingImpl(1, pastDate, contacts, "");
-        meeting.addNotes("Notes 1");
-        assertTrue(meeting.getNotes().contains("Notes 1"));
-    }
-
-    @Test
-    public void testAddNotesMultiple() {
-        Meeting meeting = new PastMeetingImpl(pastDate, contacts, "");
-        meeting.addNotes("Notes 1");
-        meeting.addNotes("Notes 2");
-        assertTrue(meeting.getNotes().contains("Notes 1"));
-        assertTrue(meeting.getNotes().contains("Notes 2"));
     }
 
 }
