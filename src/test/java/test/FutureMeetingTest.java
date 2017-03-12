@@ -14,7 +14,7 @@ import java.util.Set;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
-public class MeetingTest {
+public class FutureMeetingTest {
 
     Calendar nowDate;
     HashSet<Contact> contacts;

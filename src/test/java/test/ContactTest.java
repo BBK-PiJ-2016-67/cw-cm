@@ -63,6 +63,12 @@ public class ContactTest {
     public void testAddNotesSingle() {
         Contact joe = new ContactImpl(1, "joe");
         assertEquals("", joe.getNotes());
+        try {
+            joe.addNotes(null);
+        } catch (Exception e) {
+            assertTrue(e instanceof NullPointerException);
+            assertEquals("note cannot be null", e.getMessage());
+        }
         joe.addNotes("good meeting");
         assertEquals("good meeting", joe.getNotes());
     }

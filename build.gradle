@@ -11,3 +11,9 @@ repositories {
 dependencies {
     testCompile 'junit:junit:4.12'
 }
+
+jacocoTestReport {
+    reports {
+        html.destination "${buildDir}/reports/coverage"
+    }
+}
