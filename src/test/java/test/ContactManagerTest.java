@@ -240,9 +240,26 @@ public class ContactManagerTest {
 
     @Test
     public void testGetContactsWithIds() {
-        // illegal if no ids or if ids aren't for contacts
-        // get one, get multiple
-        // return list
+        contactManager.addNewContact("joe", "good contact");
+        contactManager.addNewContact("ben", "bad contact");
+
+        try {
+            int[] ids = null;
+            contactManager.getContacts(ids);
+        } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
+            assertEquals("ids cannot be empty", e.getMessage());
+        }
+
+        assertEquals(1, contactManager.getContacts(1).size());
+        assertEquals(2, contactManager.getContacts(1, 2).size());
+
+        try {
+            contactManager.getContacts(3);
+        } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
+            assertEquals("contact does not exist", e.getMessage());
+        }
     }
 
     @Test
