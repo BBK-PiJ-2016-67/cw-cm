@@ -2,6 +2,7 @@ package test;
 
 import impl.MockContactImpl;
 import impl.ContactManagerImpl;
+import impl.FutureMeetingImpl;
 import org.junit.Before;
 import org.junit.Test;
 import spec.*;

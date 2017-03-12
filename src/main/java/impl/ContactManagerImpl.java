@@ -46,10 +46,8 @@ public final class ContactManagerImpl implements ContactManager {
         if (id <= 0) {
             throw new IllegalArgumentException("id must be greater than 0");
         }
-        Meeting meeting = this.getMeeting(id);
         try {
-            PastMeeting pastMeeting = (PastMeeting) meeting;
-            return pastMeeting;
+            return (PastMeeting) this.getMeeting(id);
         } catch (Exception e) {
             throw new IllegalArgumentException("The meeting with this ID is happening in the future");
         }
@@ -59,7 +57,14 @@ public final class ContactManagerImpl implements ContactManager {
      * {@inheritDoc}.
      */
     public FutureMeeting getFutureMeeting(int id) {
-        return new FutureMeetingImpl(1, Calendar.getInstance(), new HashSet<Contact>());
+        if (id <= 0) {
+            throw new IllegalArgumentException("id must be greater than 0");
+        }
+        try {
+            return (FutureMeeting) this.getMeeting(id);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("The meeting with this ID is happening in the past");
+        }
     }
 
     /**
