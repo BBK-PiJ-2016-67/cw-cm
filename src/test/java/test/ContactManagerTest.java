@@ -1,6 +1,6 @@
 package test;
 
-import impl.ContactImpl;
+import impl.MockContactImpl;
 import impl.ContactManagerImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -107,7 +107,7 @@ public class ContactManagerTest {
     public void testAddFutureMeetingContactNotFoundThrowsException() {
         contactManager.addNewContact("mike", "notes");
         Set<Contact> outsideContactSet = new HashSet<Contact>();
-        outsideContactSet.add(new ContactImpl("sue", "notes"));
+        outsideContactSet.add(new MockContactImpl(1, "sue", "notes"));
 
         try {
             contactManager.addFutureMeeting(outsideContactSet, futureDate);
@@ -135,7 +135,7 @@ public class ContactManagerTest {
         Set<Contact> mikeSet = contactManager.getContacts("mike");
         contactManager.addFutureMeeting(mikeSet, futureDate);
 
-        Contact sue = new ContactImpl("sue", "notes");
+        Contact sue = new MockContactImpl(1, "sue", "notes");
         try {
             contactManager.getFutureMeetingList(sue);
             fail();
@@ -188,7 +188,7 @@ public class ContactManagerTest {
 
     @Test
     public void testAddFutureDateReturnsId() {
-        Contact mike = new ContactImpl("mike", "notes");
+        Contact mike = new MockContactImpl(1, "mike", "notes");
         contactManager.addNewContact("mike", "notes");
         Set<Contact> mikeSet = contactManager.getContacts("mike");
 
@@ -202,7 +202,7 @@ public class ContactManagerTest {
     public void testAddNewPastMeetingContactNotFoundThrowsException() {
         contactManager.addNewContact("mike", "notes");
         Set<Contact> outsideContactSet = new HashSet<Contact>();
-        outsideContactSet.add(new ContactImpl("sue", "notes"));
+        outsideContactSet.add(new MockContactImpl(1, "sue", "notes"));
 
         try {
             contactManager.addNewPastMeeting(outsideContactSet, pastDate, "text");
@@ -252,7 +252,7 @@ public class ContactManagerTest {
         Set<Contact> mikeSet = contactManager.getContacts("mike");
         contactManager.addNewPastMeeting(mikeSet, pastDate, "text");
 
-        Contact sue = new ContactImpl("sue", "notes");
+        Contact sue = new MockContactImpl(1, "sue", "notes");
         try {
             contactManager.getPastMeetingListFor(sue);
             fail();
