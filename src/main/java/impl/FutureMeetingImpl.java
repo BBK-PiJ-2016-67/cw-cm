@@ -4,7 +4,7 @@ import spec.Contact;
 import spec.FutureMeeting;
 
 import java.util.Calendar;
-import java.util.HashSet;
+import java.util.Set;
 
 /**
  * FutureMeetingImpl is a class implementing {@see FutureMeeting}
@@ -20,7 +20,7 @@ public final class FutureMeetingImpl extends MeetingImpl implements FutureMeetin
      * @param date        the date of the meeting
      * @param contacts    a list of attendees
      */
-    public FutureMeetingImpl(int ID, Calendar date, HashSet<Contact> contacts) {
+    public FutureMeetingImpl(int ID, Calendar date, Set<Contact> contacts) {
         super(ID, date, contacts);
     }
 }

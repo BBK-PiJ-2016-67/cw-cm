@@ -9,8 +9,7 @@ import spec.*;
 import java.io.*;
 import java.util.*;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 public class ContactManagerTest {

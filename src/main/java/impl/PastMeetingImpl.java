@@ -4,7 +4,7 @@ import spec.Contact;
 import spec.PastMeeting;
 
 import java.util.Calendar;
-import java.util.HashSet;
+import java.util.Set;
 
 /**
  * PastMeetingImpl is a class implementing {@see PastMeeting}
@@ -23,7 +23,7 @@ public final class PastMeetingImpl extends MeetingImpl implements PastMeeting {
      * @param contacts    a list of attendees
      * @param note        notes for the meeting
      */
-    public PastMeetingImpl(int ID, Calendar date, HashSet<Contact> contacts, String notes) {
+    public PastMeetingImpl(int ID, Calendar date, Set<Contact> contacts, String notes) {
         super(ID, date, contacts);
         if (notes == null) {
             throw new NullPointerException("notes cannot be null");

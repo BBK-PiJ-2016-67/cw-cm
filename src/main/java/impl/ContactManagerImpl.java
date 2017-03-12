@@ -18,11 +18,16 @@ import java.util.Set;
  * @author BBK-PiJ-2016-67
  */
 public final class ContactManagerImpl implements ContactManager {
+    private HashSet<Meeting> meetings;
+
     /**
      * {@inheritDoc}.
      */
     public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
-        return 1;
+        int id = this.meetings.size() + 1;
+        FutureMeetingImpl meeting = new FutureMeetingImpl(id, date, contacts);
+        this.meetings.add(meeting);
+        return id;
     }
 
     /**

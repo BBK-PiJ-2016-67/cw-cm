@@ -15,7 +15,7 @@ import java.util.Set;
 public abstract class MeetingImpl implements Meeting {
     private final int ID;
     private final Calendar date;
-    private final HashSet<Contact> contacts;
+    private final Set<Contact> contacts;
 
     /**
      * Initialises the MeetingImpl class.
@@ -24,7 +24,7 @@ public abstract class MeetingImpl implements Meeting {
      * @param date        the date of the meeting
      * @param contacts    a list of attendees
      */
-    public MeetingImpl(int ID, Calendar date, HashSet<Contact> contacts) {
+    public MeetingImpl(int ID, Calendar date, Set<Contact> contacts) {
         if (ID <= 0) {
             throw new IllegalArgumentException("ID must be greater than zero");
         } else if (date == null) {

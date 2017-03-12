@@ -13,7 +13,7 @@ import java.util.Set;
  * @author BBK-PiJ-2016-67
  */
 public final class MockPastMeetingImpl implements PastMeeting {
-    public MockPastMeetingImpl(int ID, Calendar date, HashSet<Contact> contacts, String notes) {}
+    public MockPastMeetingImpl(int ID, Calendar date, Set<Contact> contacts, String notes) {}
 
     public int getId() {
         return 1;
