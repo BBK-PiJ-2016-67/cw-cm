@@ -172,9 +172,43 @@ public class ContactManagerTest {
 
     @Test
     public void testAddNewPastMeeting() {
-        // nullpointer args null
-        // illage argument if contacts empty, contact doesnt exist or date in future
-        // return id
+        try {
+            contactManager.addNewPastMeeting(null, pastDate, "good meeting");
+        } catch (Exception e) {
+            assertTrue(e instanceof NullPointerException);
+            assertEquals("contacts cannot be null", e.getMessage());
+        }
+
+        try {
+            contactManager.addNewPastMeeting(new HashSet<Contact>(), pastDate, "good meeting");
+        } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
+            assertEquals("contacts cannot be empty", e.getMessage());
+        }
+
+        try {
+            contactManager.addNewPastMeeting(contacts, null, "good meeting");
+        } catch (Exception e) {
+            assertTrue(e instanceof NullPointerException);
+            assertEquals("date cannot be null", e.getMessage());
+        }
+
+        try {
+            contactManager.addNewPastMeeting(contacts, futureDate, "good meeting");
+        } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
+            assertEquals("date cannot be in the future", e.getMessage());
+        }
+
+        try {
+            contactManager.addNewPastMeeting(contacts, pastDate, null);
+        } catch (Exception e) {
+            assertTrue(e instanceof NullPointerException);
+            assertEquals("text cannot be null", e.getMessage());
+        }
+
+        assertEquals(1, contactManager.addNewPastMeeting(contacts, pastDate, "good meeting"));
+        assertEquals(2, contactManager.addNewPastMeeting(contacts, pastDate, "bad meeting"));
     }
 
     @Test
