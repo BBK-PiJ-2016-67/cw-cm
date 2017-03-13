@@ -214,6 +214,10 @@ public class ContactManagerTest {
     @Test
     public void testAddMeetingNotes() {
         contactManager.addFutureMeeting(contacts, futureDate);
+        contactManager.addFutureMeeting(contacts, futureDate);
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.MILLISECOND, 1);
+        contactManager.addFutureMeeting(contacts, date);
 
         try {
             contactManager.addMeetingNotes(1, null);
@@ -230,13 +234,19 @@ public class ContactManagerTest {
         }
 
         try {
-            contactManager.addMeetingNotes(3, "good meeting");
+            contactManager.addMeetingNotes(4, "good meeting");
         } catch (Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
             assertEquals("meeting not found", e.getMessage());
         }
 
-        assertTrue(contactManager.addMeetingNotes(2, "good meeting") instanceof PastMeetingImpl);
+        try {
+            Thread.sleep(10);
+            assertEquals("good meeting", contactManager.addMeetingNotes(3, "good meeting").getNotes());
+            assertEquals("good meeting", contactManager.getPastMeeting(3).getNotes());
+        } catch (Exception e) {
+            fail();
+        }
     }
 
     @Test

@@ -18,8 +18,8 @@ import java.util.Set;
  * @author BBK-PiJ-2016-67
  */
 public final class ContactManagerImpl implements ContactManager {
-    private HashSet<Contact> contacts = new HashSet<Contact>();
-    private HashSet<Meeting> meetings = new HashSet<Meeting>();
+    private List<Contact> contacts = new ArrayList<Contact>();
+    private List<Meeting> meetings = new ArrayList<Meeting>();
 
     /**
      * {@inheritDoc}.
@@ -126,7 +126,25 @@ public final class ContactManagerImpl implements ContactManager {
      * {@inheritDoc}.
      */
     public PastMeeting addMeetingNotes(int id, String text) {
-        return new PastMeetingImpl(1, Calendar.getInstance(), new HashSet<Contact>(), "");
+        if (text == null) {
+            throw new NullPointerException("text cannot be null");
+        }
+        Meeting meeting = this.getMeeting(id);
+        if (meeting == null) {
+            throw new IllegalArgumentException("meeting not found");
+        } else if (meeting.getDate().after(Calendar.getInstance())) {
+            throw new IllegalArgumentException("cannot add notes to future meeting");
+        }
+        PastMeeting pastMeeting = new PastMeetingImpl(id, meeting.getDate(), meeting.getContacts(), text);
+        int index = 0;
+        for (Meeting existingMeeting : this.meetings) {
+            if (existingMeeting.getId() == id) {
+                this.meetings.set(index, pastMeeting);
+                break;
+            }
+            index++;
+        }
+        return pastMeeting;
     }
 
     /**
