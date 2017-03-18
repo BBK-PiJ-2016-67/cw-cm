@@ -32,7 +32,7 @@ public class ContactManagerTest {
         futureDate.add(Calendar.YEAR, 1);
         contacts = new HashSet<Contact>();
         contacts.add(new MockContactImpl(1, "joe", ""));
-        contacts.add(new MockContactImpl(1, "ben", ""));
+        contacts.add(new MockContactImpl(2, "ben", ""));
     }
 
     @Test
@@ -143,12 +143,36 @@ public class ContactManagerTest {
 
     @Test
     public void testGetFutureMeetingList() {
-        // get list
-        // return empty list
+        try {
+            contactManager.getFutureMeetingList(null);
+        } catch (Exception e) {
+            assertTrue(e instanceof NullPointerException);
+            assertEquals("contact cannot be null", e.getMessage());
+        }
+
+        Contact contact = new MockContactImpl(1, "joe", "");
+
+        try {
+            contactManager.getFutureMeetingList(contact);
+        } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
+            assertEquals("contact does not exist", e.getMessage());
+        }
+
+        contactManager.addNewContact("joe", "good contact");
+
+        List<Meeting> meetings = contactManager.getFutureMeetingList(contact);
+
+        assertTrue(meetings.size() == 0);
+
+        contactManager.addFutureMeeting(contacts, futureDate);
+
+        meetings = contactManager.getFutureMeetingList(contact);
+
+        assertTrue(meetings.size() == 1);
+
         // chronologically sorted
         // no dupes
-        // nullpointer if contact null
-        // illegal argument if not in list of contacts
     }
 
     @Test
