@@ -185,12 +185,35 @@ public class ContactManagerTest {
 
     @Test
     public void testGetPastMeetingListFor() {
-        // get list
-        // return empty list
-        // chronologically sorted
-        // no dupes
-        // nullpointer if contact null
-        // illegal argument if not in list of contacts
+        try {
+            contactManager.getPastMeetingListFor(null);
+        } catch (Exception e) {
+            assertTrue(e instanceof NullPointerException);
+            assertEquals("contact cannot be null", e.getMessage());
+        }
+
+        Contact contact = new MockContactImpl(1, "joe", "");
+
+        try {
+            contactManager.getPastMeetingListFor(contact);
+        } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
+            assertEquals("contact does not exist", e.getMessage());
+        }
+
+        contactManager.addNewContact("joe", "good contact");
+        assertEquals(0, contactManager.getPastMeetingListFor(contact).size());
+
+        contactManager.addNewPastMeeting(contacts, pastDate, "good meeting");
+        assertEquals(1, contactManager.getPastMeetingListFor(contact).size());
+
+        Calendar nearPastDate = Calendar.getInstance();
+        nearPastDate.add(Calendar.MONTH, -1);
+        contactManager.addFutureMeeting(contacts, futureDate);
+        contactManager.addNewPastMeeting(contacts, nearPastDate, "good meeting also");
+        assertEquals(2, contactManager.getPastMeetingListFor(contact).size());
+        assertEquals(3, contactManager.getPastMeetingListFor(contact).get(0).getId());
+        assertEquals(1, contactManager.getPastMeetingListFor(contact).get(1).getId());
     }
 
     @Test
