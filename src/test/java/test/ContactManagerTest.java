@@ -176,11 +176,23 @@ public class ContactManagerTest {
 
     @Test
     public void testGetMeetingListOn() {
-        // return list
-        // return empty list
-        // nullpointer null date
-        // chronolog
-        // no dupes
+        try {
+            contactManager.getMeetingListOn(null);
+        } catch (Exception e) {
+            assertTrue(e instanceof NullPointerException);
+            assertEquals("date cannot be null", e.getMessage());
+        }
+
+        assertEquals(0, contactManager.getMeetingListOn(Calendar.getInstance()).size());
+
+        Calendar oneHourFromNow = Calendar.getInstance();
+        oneHourFromNow.add(Calendar.HOUR_OF_DAY, 1);
+        contactManager.addFutureMeeting(contacts, oneHourFromNow);
+        Calendar twoHourFromNow = Calendar.getInstance();
+        twoHourFromNow.add(Calendar.HOUR_OF_DAY, 2);
+        contactManager.addFutureMeeting(contacts, twoHourFromNow);
+
+        assertEquals(2, contactManager.getMeetingListOn(Calendar.getInstance()).size());
     }
 
     @Test
