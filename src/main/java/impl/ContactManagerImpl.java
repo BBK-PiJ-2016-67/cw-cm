@@ -123,7 +123,28 @@ public final class ContactManagerImpl implements ContactManager {
      * {@inheritDoc}.
      */
     public List<Meeting> getMeetingListOn(Calendar date) {
-        return new ArrayList<Meeting>();
+        if (date == null) {
+            throw new NullPointerException("date cannot be null");
+        }
+        List<Meeting> meetings = new ArrayList<Meeting>();
+        int day = date.get(Calendar.DAY_OF_MONTH);
+        int month = date.get(Calendar.MONTH);
+        int year = date.get(Calendar.YEAR);
+        for (Meeting meeting : this.meetings) {
+            Calendar meetingDate = meeting.getDate();
+            int meetingDay = meetingDate.get(Calendar.DAY_OF_MONTH);
+            int meetingMonth = meetingDate.get(Calendar.MONTH);
+            int meetingYear = meetingDate.get(Calendar.YEAR);
+            if (day == meetingDay && month == meetingMonth && year == meetingYear) {
+                meetings.add(meeting);
+            }
+        }
+        Collections.sort(meetings, new Comparator<Meeting>(){
+            public int compare(Meeting meetingOne, Meeting meetingTwo){
+                return meetingOne.getDate().compareTo(meetingTwo.getDate());
+            }
+        });
+        return meetings;
     }
 
     /**
