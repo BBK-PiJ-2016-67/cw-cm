@@ -167,9 +167,10 @@ public class ContactManagerTest {
 
         Calendar nearFutureDate = Calendar.getInstance();
         nearFutureDate.add(Calendar.MONTH, 1);
+        contactManager.addNewPastMeeting(contacts, pastDate, "good meeting");
         contactManager.addFutureMeeting(contacts, nearFutureDate);
         assertEquals(2, contactManager.getFutureMeetingList(contact).size());
-        assertEquals(2, contactManager.getFutureMeetingList(contact).get(0).getId());
+        assertEquals(3, contactManager.getFutureMeetingList(contact).get(0).getId());
         assertEquals(1, contactManager.getFutureMeetingList(contact).get(1).getId());
     }
 
