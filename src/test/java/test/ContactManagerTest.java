@@ -160,16 +160,10 @@ public class ContactManagerTest {
         }
 
         contactManager.addNewContact("joe", "good contact");
-
-        List<Meeting> meetings = contactManager.getFutureMeetingList(contact);
-
-        assertTrue(meetings.size() == 0);
+        assertEquals(0, contactManager.getFutureMeetingList(contact).size());
 
         contactManager.addFutureMeeting(contacts, futureDate);
-
-        meetings = contactManager.getFutureMeetingList(contact);
-
-        assertTrue(meetings.size() == 1);
+        assertEquals(1, contactManager.getFutureMeetingList(contact).size());
 
         // chronologically sorted
         // no dupes

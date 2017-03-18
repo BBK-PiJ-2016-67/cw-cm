@@ -84,7 +84,32 @@ public final class ContactManagerImpl implements ContactManager {
      * {@inheritDoc}.
      */
     public List<Meeting> getFutureMeetingList(Contact contact) {
-        return new ArrayList<Meeting>();
+        if (contact == null) {
+            throw new NullPointerException("contact cannot be null");
+        }
+        boolean contactExists = false;
+        for (Contact existingContact : this.contacts) {
+            if (contact.getId() == existingContact.getId()) {
+                contactExists = true;
+                break;
+            }
+        }
+        if (!contactExists) {
+            throw new IllegalArgumentException("contact does not exist");
+        }
+        List<Meeting> meetings = new ArrayList<Meeting>();
+        for (Meeting meeting : this.meetings) {
+            if (!(meeting instanceof FutureMeeting)) {
+                continue;
+            }
+            for (Contact meetingContact : meeting.getContacts()) {
+                if (contact.getId() == meetingContact.getId()) {
+                    meetings.add(meeting);
+                    break;
+                }
+            }
+        }
+        return meetings;
     }
 
     /**
