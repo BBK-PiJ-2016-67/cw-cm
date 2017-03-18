@@ -130,7 +130,39 @@ public final class ContactManagerImpl implements ContactManager {
      * {@inheritDoc}.
      */
     public List<PastMeeting> getPastMeetingListFor(Contact contact) {
-        return new ArrayList<PastMeeting>();
+        if (contact == null) {
+            throw new NullPointerException("contact cannot be null");
+        }
+        boolean contactExists = false;
+        for (Contact existingContact : this.contacts) {
+            if (contact.getId() == existingContact.getId()) {
+                contactExists = true;
+                break;
+            }
+        }
+        if (!contactExists) {
+            throw new IllegalArgumentException("contact does not exist");
+        }
+        List<PastMeeting> meetings = new ArrayList<PastMeeting>();
+        for (Meeting meeting : this.meetings) {
+            try {
+                PastMeeting pastMeeting = (PastMeeting) meeting;
+                for (Contact meetingContact : pastMeeting.getContacts()) {
+                    if (contact.getId() == meetingContact.getId()) {
+                        meetings.add(pastMeeting);
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                continue;
+            }
+        }
+        Collections.sort(meetings, new Comparator<PastMeeting>(){
+            public int compare(PastMeeting meetingOne, PastMeeting meetingTwo){
+                return meetingTwo.getDate().compareTo(meetingOne.getDate());
+            }
+        });
+        return meetings;
     }
 
     /**
