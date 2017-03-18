@@ -8,6 +8,8 @@ import spec.PastMeeting;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -109,6 +111,11 @@ public final class ContactManagerImpl implements ContactManager {
                 }
             }
         }
+        Collections.sort(meetings, new Comparator<Meeting>(){
+            public int compare(Meeting meetingOne, Meeting meetingTwo){
+                return meetingOne.getDate().compareTo(meetingTwo.getDate());
+            }
+        });
         return meetings;
     }
 

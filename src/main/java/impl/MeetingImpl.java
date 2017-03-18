@@ -12,7 +12,7 @@ import java.util.Set;
  *
  * @author BBK-PiJ-2016-67
  */
-public abstract class MeetingImpl implements Meeting, Comparable<Meeting> {
+public abstract class MeetingImpl implements Meeting {
     private final int ID;
     private final Calendar date;
     private final Set<Contact> contacts;
@@ -37,14 +37,6 @@ public abstract class MeetingImpl implements Meeting, Comparable<Meeting> {
         this.ID = ID;
         this.date = date;
         this.contacts = contacts;
-    }
-
-    /**
-     * {@inheritDoc}.
-     */
-    @Override
-    public int compareTo(Meeting meeting) {
-        return 1;
     }
 
     /**
