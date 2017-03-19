@@ -20,9 +20,14 @@ public abstract class MeetingImpl implements Meeting {
     /**
      * Initialises the MeetingImpl class.
      *
-     * @param id          the id of the contact
-     * @param date        the date of the meeting
-     * @param contacts    a list of attendees
+     * @param id                           the id of the contact
+     * @param date                         the date of the meeting
+     * @param contacts                     a list of attendees
+     * @throws IllegalArgumentException    if the id is not greater
+     *                                     than zero or the contacts
+     *                                     are empty
+     * @throws NullPointerException        if the date or the contacts
+     *                                     are null
      */
     public MeetingImpl(int id, Calendar date, Set<Contact> contacts) {
         if (id <= 0) {

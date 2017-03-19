@@ -16,9 +16,14 @@ public final class FutureMeetingImpl extends MeetingImpl implements FutureMeetin
     /**
      * Initialises the FutureMeetingImpl class.
      *
-     * @param id          the id of the contact
-     * @param date        the date of the meeting
-     * @param contacts    a list of attendees
+     * @param id                           the id of the contact
+     * @param date                         the date of the meeting
+     * @param contacts                     a list of attendees
+     * @throws IllegalArgumentException    if the id is not greater
+     *                                     than zero or the contacts
+     *                                     are empty
+     * @throws NullPointerException        if the date or the contacts
+     *                                     are null
      */
     public FutureMeetingImpl(int id, Calendar date, Set<Contact> contacts) {
         super(id, date, contacts);
