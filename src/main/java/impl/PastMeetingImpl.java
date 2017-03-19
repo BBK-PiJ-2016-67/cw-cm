@@ -13,7 +13,7 @@ import java.util.Set;
  * @author BBK-PiJ-2016-67
  */
 public final class PastMeetingImpl extends MeetingImpl implements PastMeeting {
-  private String notes;
+  private final String notes;
 
   /**
    * Initialises the PastMeetingImpl class.
@@ -28,7 +28,7 @@ public final class PastMeetingImpl extends MeetingImpl implements PastMeeting {
    * @throws NullPointerException        if the date, the contacts
    *                                     or the note are null
    */
-  public PastMeetingImpl(int id, Calendar date, Set<Contact> contacts, String notes) {
+  public PastMeetingImpl(final int id, final Calendar date, final Set<Contact> contacts, final String notes) {
     super(id, date, contacts);
     if (notes == null) {
       throw new NullPointerException("notes cannot be null");

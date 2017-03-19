@@ -25,7 +25,7 @@ public final class FutureMeetingImpl extends MeetingImpl implements FutureMeetin
    * @throws NullPointerException        if the date or the contacts
    *                                     are null
    */
-  public FutureMeetingImpl(int id, Calendar date, Set<Contact> contacts) {
+  public FutureMeetingImpl(final int id, final Calendar date, final Set<Contact> contacts) {
     super(id, date, contacts);
   }
 }

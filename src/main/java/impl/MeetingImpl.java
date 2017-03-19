@@ -29,7 +29,7 @@ public abstract class MeetingImpl implements Meeting {
    * @throws NullPointerException        if the date or the contacts
    *                                     are null
    */
-  public MeetingImpl(int id, Calendar date, Set<Contact> contacts) {
+  public MeetingImpl(final int id, final Calendar date, final Set<Contact> contacts) {
     if (id <= 0) {
       throw new IllegalArgumentException("id must be greater than zero");
     } else if (date == null) {
@@ -57,7 +57,7 @@ public abstract class MeetingImpl implements Meeting {
    */
   @Override
   public Calendar getDate() {
-    Calendar date = Calendar.getInstance();
+    final Calendar date = Calendar.getInstance();
     date.setTime(this.date.getTime());
     return date;
   }
@@ -67,7 +67,7 @@ public abstract class MeetingImpl implements Meeting {
    */
   @Override
   public Set<Contact> getContacts() {
-    HashSet<Contact> contacts = new HashSet<Contact>();
+    final HashSet<Contact> contacts = new HashSet<Contact>();
     contacts.addAll(this.contacts);
     return contacts;
   }

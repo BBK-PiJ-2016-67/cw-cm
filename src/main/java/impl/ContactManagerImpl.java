@@ -20,8 +20,13 @@ import java.util.Set;
  * @author BBK-PiJ-2016-67
  */
 public final class ContactManagerImpl implements ContactManager {
-  private List<Contact> contacts = new ArrayList<Contact>();
-  private List<Meeting> meetings = new ArrayList<Meeting>();
+  private final List<Contact> contacts = new ArrayList<Contact>();
+  private final List<Meeting> meetings = new ArrayList<Meeting>();
+
+  private static final String CONTACT_CANNOT_BE_NULL = "contact cannot be null";
+  private static final String CONTACT_DOES_NOT_EXIST = "contact does not exist";
+  private static final String CONTACTS_CANNOT_BE_NULL = "contacts cannot be null";
+  private static final String DATE_CANNOT_BE_NULL = "date cannot be null";
 
   /**
    * Determines whether a contact exists.
@@ -29,7 +34,7 @@ public final class ContactManagerImpl implements ContactManager {
    * @param contact    the contact to find
    * @return           whether the contact exists
    */
-  private boolean exists(Contact contact) {
+  private boolean exists(final Contact contact) {
     for (Contact existingContact : this.contacts) {
       if (contact.getId() == existingContact.getId()) {
         return true;
@@ -45,7 +50,7 @@ public final class ContactManagerImpl implements ContactManager {
    * @param contacts    the contacts to find
    * @return            whether all contacts exist
    */
-  private boolean exists(Set<Contact> contacts) {
+  private boolean exists(final Set<Contact> contacts) {
     for (Contact contact : contacts) {
       if (!this.exists(contact)) {
         return false;
@@ -61,7 +66,7 @@ public final class ContactManagerImpl implements ContactManager {
    * @param contact    the contact to find
    * @return           whether the meeting contains the contact
    */
-  private boolean meetingContainsContact(Meeting meeting, Contact contact) {
+  private boolean meetingContainsContact(final Meeting meeting, final Contact contact) {
     for (Contact meetingContact : meeting.getContacts()) {
       if (contact.getId() == meetingContact.getId()) {
         return true;
@@ -74,18 +79,18 @@ public final class ContactManagerImpl implements ContactManager {
    * {@inheritDoc}.
    */
   @Override
-  public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
+  public int addFutureMeeting(final Set<Contact> contacts, final Calendar date) {
     if (contacts == null) {
-      throw new NullPointerException("contacts cannot be null");
+      throw new NullPointerException(CONTACTS_CANNOT_BE_NULL);
     } else if (date == null) {
-      throw new NullPointerException("date cannot be null");
+      throw new NullPointerException(DATE_CANNOT_BE_NULL);
     } else if (!date.after(Calendar.getInstance())) {
       throw new IllegalArgumentException("date cannot be in the past");
     } else if (!this.exists(contacts)) {
-      throw new IllegalArgumentException("contact does not exist");
+      throw new IllegalArgumentException(CONTACT_DOES_NOT_EXIST);
     }
-    int id = this.meetings.size() + 1;
-    FutureMeeting meeting = new FutureMeetingImpl(id, date, contacts);
+    final int id = this.meetings.size() + 1;
+    final FutureMeeting meeting = new FutureMeetingImpl(id, date, contacts);
     this.meetings.add(meeting);
     return id;
   }
@@ -133,9 +138,9 @@ public final class ContactManagerImpl implements ContactManager {
   @Override
   public List<Meeting> getFutureMeetingList(Contact contact) {
     if (contact == null) {
-      throw new NullPointerException("contact cannot be null");
+      throw new NullPointerException(CONTACT_CANNOT_BE_NULL);
     } else if (!this.exists(contact)) {
-      throw new IllegalArgumentException("contact does not exist");
+      throw new IllegalArgumentException(CONTACT_DOES_NOT_EXIST);
     }
     List<Meeting> meetings = new ArrayList<Meeting>();
     for (Meeting meeting : this.meetings) {
@@ -160,7 +165,7 @@ public final class ContactManagerImpl implements ContactManager {
   @Override
   public List<Meeting> getMeetingListOn(Calendar date) {
     if (date == null) {
-      throw new NullPointerException("date cannot be null");
+      throw new NullPointerException(DATE_CANNOT_BE_NULL);
     }
     List<Meeting> meetings = new ArrayList<Meeting>();
     int day = date.get(Calendar.DAY_OF_MONTH);
@@ -189,9 +194,9 @@ public final class ContactManagerImpl implements ContactManager {
   @Override
   public List<PastMeeting> getPastMeetingListFor(Contact contact) {
     if (contact == null) {
-      throw new NullPointerException("contact cannot be null");
+      throw new NullPointerException(CONTACT_CANNOT_BE_NULL);
     } else if (!this.exists(contact)) {
-      throw new IllegalArgumentException("contact does not exist");
+      throw new IllegalArgumentException(CONTACT_DOES_NOT_EXIST);
     }
     List<PastMeeting> meetings = new ArrayList<PastMeeting>();
     for (Meeting meeting : this.meetings) {
@@ -218,15 +223,15 @@ public final class ContactManagerImpl implements ContactManager {
   @Override
   public int addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
     if (contacts == null) {
-      throw new NullPointerException("contacts cannot be null");
+      throw new NullPointerException(CONTACTS_CANNOT_BE_NULL);
     } else if (date == null) {
-      throw new NullPointerException("date cannot be null");
+      throw new NullPointerException(DATE_CANNOT_BE_NULL);
     } else if (date.after(Calendar.getInstance())) {
       throw new IllegalArgumentException("date cannot be in the future");
     } else if (text == null) {
       throw new NullPointerException("text cannot be null");
     } else if (!this.exists(contacts)) {
-      throw new IllegalArgumentException("contact does not exist");
+      throw new IllegalArgumentException(CONTACT_DOES_NOT_EXIST);
     }
     int id = this.meetings.size() + 1;
     PastMeeting meeting = new PastMeetingImpl(id, date, contacts, text);
@@ -310,7 +315,7 @@ public final class ContactManagerImpl implements ContactManager {
       }
     }
     if (ids.length != contacts.size()) {
-      throw new IllegalArgumentException("contact does not exist");
+      throw new IllegalArgumentException(CONTACT_DOES_NOT_EXIST);
     }
     return contacts;
   }

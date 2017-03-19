@@ -21,7 +21,7 @@ public final class ContactImpl implements Contact {
    *                                     than zero
    * @throws NullPointerException        if the name is null
    */
-  public ContactImpl(int id, String name) {
+  public ContactImpl(final int id, final String name) {
     this(id, name, "");
   }
 
@@ -37,7 +37,7 @@ public final class ContactImpl implements Contact {
    * @throws NullPointerException        if the name or the notes
    *                                     are null
    */
-  public ContactImpl(int id, String name, String notes) {
+  public ContactImpl(final int id, final String name, final String notes) {
     if (id <= 0) {
       throw new IllegalArgumentException("id must be greater than zero");
     } else if (name == null) {
@@ -78,7 +78,7 @@ public final class ContactImpl implements Contact {
    * {@inheritDoc}.
    */
   @Override
-  public void addNotes(String note) {
+  public void addNotes(final String note) {
     if (note == null) {
       throw new NullPointerException("note cannot be null");
     }

@@ -37,5 +37,27 @@ tasks.withType(FindBugs) {
 
 pmd {
     ignoreFailures = true
+    toolVersion = "4.3"
+    sourceSets = [sourceSets.main]
     reportsDir = file("$project.buildDir/reports/pmd")
+    ruleSets = [
+        "basic",
+        "braces",
+        "android",
+        "clone",
+        "codesize",
+        "design", 
+        "finalizers",
+        "imports",
+        "j2ee",
+        "junit",
+        "logging-jakarta-commons",
+        "logging-java",
+        "migrating",
+        "optimizations",
+        "strings",
+        "sunsecure",
+        "typeresolution",
+        "unusedcode"
+    ]
 }
