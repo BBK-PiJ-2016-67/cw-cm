@@ -15,8 +15,11 @@ public final class ContactImpl implements Contact {
     /**
      * Initialises the ContactImpl class.
      *
-     * @param id       the id of the contact
-     * @param name     the name of the contact
+     * @param id                           the id of the contact
+     * @param name                         the name of the contact
+     * @throws IllegalArgumentException    if the id is not greater
+     *                                     than zero
+     * @throws NullPointerException        if the name is null
      */
     public ContactImpl(int id, String name) {
         this(id, name, "");
@@ -25,9 +28,14 @@ public final class ContactImpl implements Contact {
     /**
      * Initialises the ContactImpl class.
      *
-     * @param id       the id of the contact
-     * @param name     the name of the contact
-     * @param notes    initial notes about the contact
+     * @param id                           the id of the contact
+     * @param name                         the name of the contact
+     * @param notes                        initial notes about the
+     *                                     contact
+     * @throws IllegalArgumentException    if the id is not greater
+     *                                     than zero
+     * @throws NullPointerException        if the name or the notes
+     *                                     are null
      */
     public ContactImpl(int id, String name, String notes) {
         if (id <= 0) {
