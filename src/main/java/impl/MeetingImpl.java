@@ -42,6 +42,7 @@ public abstract class MeetingImpl implements Meeting {
     /**
      * {@inheritDoc}.
      */
+    @Override
     public int getId() {
         return this.id;
     }
@@ -49,6 +50,7 @@ public abstract class MeetingImpl implements Meeting {
     /**
      * {@inheritDoc}.
      */
+    @Override
     public Calendar getDate() {
         Calendar date = Calendar.getInstance();
         date.setTime(this.date.getTime());
@@ -58,6 +60,7 @@ public abstract class MeetingImpl implements Meeting {
     /**
      * {@inheritDoc}.
      */
+    @Override
     public Set<Contact> getContacts() {
         HashSet<Contact> contacts = new HashSet<Contact>();
         contacts.addAll(this.contacts);

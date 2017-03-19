@@ -34,6 +34,7 @@ public final class PastMeetingImpl extends MeetingImpl implements PastMeeting {
     /**
      * {@inheritDoc}.
      */
+    @Override
     public String getNotes() {
         return this.notes;
     }

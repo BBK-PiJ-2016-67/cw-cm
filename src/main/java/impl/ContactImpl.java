@@ -45,6 +45,7 @@ public final class ContactImpl implements Contact {
     /**
      * {@inheritDoc}.
      */
+    @Override
     public int getId() {
         return this.id;
     }
@@ -52,6 +53,7 @@ public final class ContactImpl implements Contact {
     /**
      * {@inheritDoc}.
      */
+    @Override
     public String getName() {
         return this.name;
     }
@@ -59,6 +61,7 @@ public final class ContactImpl implements Contact {
     /**
      * {@inheritDoc}.
      */
+    @Override
     public String getNotes() {
         return this.notes;
     }
@@ -66,6 +69,7 @@ public final class ContactImpl implements Contact {
     /**
      * {@inheritDoc}.
      */
+    @Override
     public void addNotes(String note) {
         if (note == null) {
             throw new NullPointerException("note cannot be null");

@@ -61,6 +61,7 @@ public final class ContactManagerImpl implements ContactManager {
     /**
      * {@inheritDoc}.
      */
+    @Override
     public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
         if (contacts == null) {
             throw new NullPointerException("contacts cannot be null");
@@ -80,6 +81,7 @@ public final class ContactManagerImpl implements ContactManager {
     /**
      * {@inheritDoc}.
      */
+    @Override
     public PastMeeting getPastMeeting(int id) {
         if (id <= 0) {
             throw new IllegalArgumentException("id must be greater than 0");
@@ -94,6 +96,7 @@ public final class ContactManagerImpl implements ContactManager {
     /**
      * {@inheritDoc}.
      */
+    @Override
     public FutureMeeting getFutureMeeting(int id) {
         if (id <= 0) {
             throw new IllegalArgumentException("id must be greater than 0");
@@ -108,6 +111,7 @@ public final class ContactManagerImpl implements ContactManager {
     /**
      * {@inheritDoc}.
      */
+    @Override
     public Meeting getMeeting(int id) {
         for (Meeting meeting : this.meetings) {
             if (meeting.getId() == id) {
@@ -120,6 +124,7 @@ public final class ContactManagerImpl implements ContactManager {
     /**
      * {@inheritDoc}.
      */
+    @Override
     public List<Meeting> getFutureMeetingList(Contact contact) {
         if (contact == null) {
             throw new NullPointerException("contact cannot be null");
@@ -150,6 +155,7 @@ public final class ContactManagerImpl implements ContactManager {
     /**
      * {@inheritDoc}.
      */
+    @Override
     public List<Meeting> getMeetingListOn(Calendar date) {
         if (date == null) {
             throw new NullPointerException("date cannot be null");
@@ -178,6 +184,7 @@ public final class ContactManagerImpl implements ContactManager {
     /**
      * {@inheritDoc}.
      */
+    @Override
     public List<PastMeeting> getPastMeetingListFor(Contact contact) {
         if (contact == null) {
             throw new NullPointerException("contact cannot be null");
@@ -210,6 +217,7 @@ public final class ContactManagerImpl implements ContactManager {
     /**
      * {@inheritDoc}.
      */
+    @Override
     public int addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
         if (contacts == null) {
             throw new NullPointerException("contacts cannot be null");
@@ -231,6 +239,7 @@ public final class ContactManagerImpl implements ContactManager {
     /**
      * {@inheritDoc}.
      */
+    @Override
     public PastMeeting addMeetingNotes(int id, String text) {
         if (text == null) {
             throw new NullPointerException("text cannot be null");
@@ -256,6 +265,7 @@ public final class ContactManagerImpl implements ContactManager {
     /**
      * {@inheritDoc}.
      */
+    @Override
     public int addNewContact(String name, String notes) {
         int id = this.contacts.size() + 1;
         Contact contact = new ContactImpl(id, name, notes);
@@ -271,6 +281,7 @@ public final class ContactManagerImpl implements ContactManager {
     /**
      * {@inheritDoc}.
      */
+    @Override
     public Set<Contact> getContacts(String name) {
         if (name == null) {
             throw new NullPointerException("name cannot be null");
@@ -287,6 +298,7 @@ public final class ContactManagerImpl implements ContactManager {
     /**
      * {@inheritDoc}.
      */
+    @Override
     public Set<Contact> getContacts(int... ids) {
         if (ids == null) {
             throw new IllegalArgumentException("ids cannot be null");
@@ -308,6 +320,7 @@ public final class ContactManagerImpl implements ContactManager {
     /**
      * {@inheritDoc}.
      */
+    @Override
     public void flush() {
         
     }
