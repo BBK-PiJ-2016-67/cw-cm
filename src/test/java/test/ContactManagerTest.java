@@ -69,28 +69,14 @@ public class ContactManagerTest {
         contactManager.addNewPastMeeting(contacts, pastDate, "good meeting");
         contactManager.addFutureMeeting(contacts, futureDate);
 
-        try {
-            contactManager.getPastMeeting(-1);
-        } catch (Exception e) {
-            assertTrue(e instanceof IllegalArgumentException);
-            assertEquals("id must be greater than 0", e.getMessage());
-        }
-
-        try {
-            contactManager.getPastMeeting(0);
-        } catch (Exception e) {
-            assertTrue(e instanceof IllegalArgumentException);
-            assertEquals("id must be greater than 0", e.getMessage());
-        }
-
         assertEquals("good meeting", contactManager.getPastMeeting(1).getNotes());
         assertEquals(null, contactManager.getPastMeeting(3));
 
         try {
             contactManager.getPastMeeting(2);
         } catch (Exception e) {
-            assertTrue(e instanceof IllegalArgumentException);
-            assertEquals("The meeting with this ID is happening in the future", e.getMessage());
+            assertTrue(e instanceof IllegalStateException);
+            assertEquals("The meeting with this id is happening in the future", e.getMessage());
         }
     }
 
@@ -99,28 +85,14 @@ public class ContactManagerTest {
         contactManager.addFutureMeeting(contacts, futureDate);
         contactManager.addNewPastMeeting(contacts, pastDate, "good meeting");
 
-        try {
-            contactManager.getFutureMeeting(-1);
-        } catch (Exception e) {
-            assertTrue(e instanceof IllegalArgumentException);
-            assertEquals("id must be greater than 0", e.getMessage());
-        }
-
-        try {
-            contactManager.getFutureMeeting(0);
-        } catch (Exception e) {
-            assertTrue(e instanceof IllegalArgumentException);
-            assertEquals("id must be greater than 0", e.getMessage());
-        }
-
         assertTrue(contactManager.getFutureMeeting(1) instanceof FutureMeetingImpl);
         assertEquals(null, contactManager.getFutureMeeting(3));
         
         try {
             contactManager.getFutureMeeting(2);
         } catch (Exception e) {
-            assertTrue(e instanceof IllegalArgumentException);
-            assertEquals("The meeting with this ID is happening in the past", e.getMessage());
+            assertTrue(e instanceof IllegalStateException);
+            assertEquals("The meeting with this id is happening in the past", e.getMessage());
         }
     }
 
@@ -275,7 +247,7 @@ public class ContactManagerTest {
         try {
             contactManager.addMeetingNotes(1, "good meeting");
         } catch (Exception e) {
-            assertTrue(e instanceof IllegalArgumentException);
+            assertTrue(e instanceof IllegalStateException);
             assertEquals("cannot add notes to future meeting", e.getMessage());
         }
 

@@ -83,13 +83,10 @@ public final class ContactManagerImpl implements ContactManager {
      */
     @Override
     public PastMeeting getPastMeeting(int id) {
-        if (id <= 0) {
-            throw new IllegalArgumentException("id must be greater than 0");
-        }
         try {
             return (PastMeeting) this.getMeeting(id);
         } catch (Exception e) {
-            throw new IllegalArgumentException("The meeting with this ID is happening in the future");
+            throw new IllegalStateException("The meeting with this id is happening in the future");
         }
     }
 
@@ -98,13 +95,10 @@ public final class ContactManagerImpl implements ContactManager {
      */
     @Override
     public FutureMeeting getFutureMeeting(int id) {
-        if (id <= 0) {
-            throw new IllegalArgumentException("id must be greater than 0");
-        }
         try {
             return (FutureMeeting) this.getMeeting(id);
         } catch (Exception e) {
-            throw new IllegalArgumentException("The meeting with this ID is happening in the past");
+            throw new IllegalStateException("The meeting with this id is happening in the past");
         }
     }
 
@@ -248,7 +242,7 @@ public final class ContactManagerImpl implements ContactManager {
         if (meeting == null) {
             throw new IllegalArgumentException("meeting not found");
         } else if (meeting.getDate().after(Calendar.getInstance())) {
-            throw new IllegalArgumentException("cannot add notes to future meeting");
+            throw new IllegalStateException("cannot add notes to future meeting");
         }
         PastMeeting pastMeeting = new PastMeetingImpl(id, meeting.getDate(), meeting.getContacts(), text);
         int index = 0;
