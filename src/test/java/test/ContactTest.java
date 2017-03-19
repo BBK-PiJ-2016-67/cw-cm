@@ -10,77 +10,77 @@ import static org.junit.Assert.*;
 
 public class ContactTest {
 
-    @Before
-    public void setUp() {
+  @Before
+  public void setUp() {
 
+  }
+
+  @Test
+  public void testContactConstructorSetIDName() {
+    try {
+      new ContactImpl(-1, "joe");
+    } catch (Exception e) {
+      assertTrue(e instanceof IllegalArgumentException);
+      assertEquals("id must be greater than zero", e.getMessage());
     }
 
-    @Test
-    public void testContactConstructorSetIDName() {
-        try {
-            new ContactImpl(-1, "joe");
-        } catch (Exception e) {
-            assertTrue(e instanceof IllegalArgumentException);
-            assertEquals("id must be greater than zero", e.getMessage());
-        }
-
-        try {
-            new ContactImpl(0, "joe");
-        } catch (Exception e) {
-            assertTrue(e instanceof IllegalArgumentException);
-            assertEquals("id must be greater than zero", e.getMessage());
-        }
-
-        try {
-            new ContactImpl(1, null);
-        } catch (Exception e) {
-            assertTrue(e instanceof NullPointerException);
-            assertEquals("name cannot be null", e.getMessage());
-        }
-
-        Contact joe = new ContactImpl(1, "joe");
-        assertEquals(1, joe.getId());
-        assertEquals("joe", joe.getName());
-        assertEquals("", joe.getNotes());
+    try {
+      new ContactImpl(0, "joe");
+    } catch (Exception e) {
+      assertTrue(e instanceof IllegalArgumentException);
+      assertEquals("id must be greater than zero", e.getMessage());
     }
 
-    @Test
-    public void testContactConstructorSetIDNameNotes() {
-        try {
-            new ContactImpl(1, "joe", null);
-        } catch (Exception e) {
-            assertTrue(e instanceof NullPointerException);
-            assertEquals("notes cannot be null", e.getMessage());
-        }
-
-        Contact joe = new ContactImpl(1, "joe", "good meeting");
-        assertEquals(1, joe.getId());
-        assertEquals("joe", joe.getName());
-        assertEquals("good meeting", joe.getNotes());
+    try {
+      new ContactImpl(1, null);
+    } catch (Exception e) {
+      assertTrue(e instanceof NullPointerException);
+      assertEquals("name cannot be null", e.getMessage());
     }
 
-    @Test
-    public void testAddNotesSingle() {
-        Contact joe = new ContactImpl(1, "joe");
-        assertEquals("", joe.getNotes());
-        try {
-            joe.addNotes(null);
-        } catch (Exception e) {
-            assertTrue(e instanceof NullPointerException);
-            assertEquals("note cannot be null", e.getMessage());
-        }
-        joe.addNotes("good meeting");
-        assertEquals("good meeting", joe.getNotes());
+    Contact joe = new ContactImpl(1, "joe");
+    assertEquals(1, joe.getId());
+    assertEquals("joe", joe.getName());
+    assertEquals("", joe.getNotes());
+  }
+
+  @Test
+  public void testContactConstructorSetIDNameNotes() {
+    try {
+      new ContactImpl(1, "joe", null);
+    } catch (Exception e) {
+      assertTrue(e instanceof NullPointerException);
+      assertEquals("notes cannot be null", e.getMessage());
     }
 
-    @Test
-    public void testAddNotesMultiple() {
-        Contact joe = new ContactImpl(1, "joe");
-        assertEquals("", joe.getNotes());
-        joe.addNotes("good meeting");
-        joe.addNotes("best business");
-        assertTrue(joe.getNotes().contains("good meeting"));
-        assertTrue(joe.getNotes().contains("best business"));
+    Contact joe = new ContactImpl(1, "joe", "good meeting");
+    assertEquals(1, joe.getId());
+    assertEquals("joe", joe.getName());
+    assertEquals("good meeting", joe.getNotes());
+  }
+
+  @Test
+  public void testAddNotesSingle() {
+    Contact joe = new ContactImpl(1, "joe");
+    assertEquals("", joe.getNotes());
+    try {
+      joe.addNotes(null);
+    } catch (Exception e) {
+      assertTrue(e instanceof NullPointerException);
+      assertEquals("note cannot be null", e.getMessage());
     }
+    joe.addNotes("good meeting");
+    assertEquals("good meeting", joe.getNotes());
+  }
+
+  @Test
+  public void testAddNotesMultiple() {
+    Contact joe = new ContactImpl(1, "joe");
+    assertEquals("", joe.getNotes());
+    joe.addNotes("good meeting");
+    joe.addNotes("best business");
+    assertTrue(joe.getNotes().contains("good meeting"));
+    assertTrue(joe.getNotes().contains("best business"));
+  }
 
 }

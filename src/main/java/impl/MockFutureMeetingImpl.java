@@ -13,17 +13,17 @@ import java.util.Set;
  * @author BBK-PiJ-2016-67
  */
 public final class MockFutureMeetingImpl implements FutureMeeting {
-    public MockFutureMeetingImpl(int id, Calendar date, Set<Contact> contacts) {}
+  public MockFutureMeetingImpl(int id, Calendar date, Set<Contact> contacts) {}
 
-    public int getId() {
-        return 1;
-    }
+  public int getId() {
+    return 1;
+  }
 
-    public Calendar getDate() {
-        return Calendar.getInstance();
-    }
+  public Calendar getDate() {
+    return Calendar.getInstance();
+  }
 
-    public Set<Contact> getContacts() {
-        return new HashSet<Contact>();
-    }
+  public Set<Contact> getContacts() {
+    return new HashSet<Contact>();
+  }
 }
