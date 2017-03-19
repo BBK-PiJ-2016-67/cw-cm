@@ -13,20 +13,20 @@ import java.util.Set;
  * @author BBK-PiJ-2016-67
  */
 public abstract class MeetingImpl implements Meeting {
-    private final int ID;
+    private final int id;
     private final Calendar date;
     private final Set<Contact> contacts;
 
     /**
      * Initialises the MeetingImpl class.
      *
-     * @param ID          the ID of the contact
+     * @param id          the id of the contact
      * @param date        the date of the meeting
      * @param contacts    a list of attendees
      */
-    public MeetingImpl(int ID, Calendar date, Set<Contact> contacts) {
-        if (ID <= 0) {
-            throw new IllegalArgumentException("ID must be greater than zero");
+    public MeetingImpl(int id, Calendar date, Set<Contact> contacts) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("id must be greater than zero");
         } else if (date == null) {
             throw new NullPointerException("date cannot be null");
         } else if (contacts == null) {
@@ -34,7 +34,7 @@ public abstract class MeetingImpl implements Meeting {
         } else if (contacts.isEmpty()) {
             throw new IllegalArgumentException("contacts cannot be empty");
         }
-        this.ID = ID;
+        this.id = id;
         this.date = date;
         this.contacts = contacts;
     }
@@ -43,7 +43,7 @@ public abstract class MeetingImpl implements Meeting {
      * {@inheritDoc}.
      */
     public int getId() {
-        return this.ID;
+        return this.id;
     }
 
     /**

@@ -16,11 +16,11 @@ public final class FutureMeetingImpl extends MeetingImpl implements FutureMeetin
     /**
      * Initialises the FutureMeetingImpl class.
      *
-     * @param ID          the ID of the contact
+     * @param id          the id of the contact
      * @param date        the date of the meeting
      * @param contacts    a list of attendees
      */
-    public FutureMeetingImpl(int ID, Calendar date, Set<Contact> contacts) {
-        super(ID, date, contacts);
+    public FutureMeetingImpl(int id, Calendar date, Set<Contact> contacts) {
+        super(id, date, contacts);
     }
 }

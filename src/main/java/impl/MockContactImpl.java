@@ -8,9 +8,9 @@ import spec.Contact;
  * @author BBK-PiJ-2016-67
  */
 public final class MockContactImpl implements Contact {
-    public MockContactImpl(int ID, String name) {}
+    public MockContactImpl(int id, String name) {}
 
-    public MockContactImpl(int ID, String name, String notes) {}
+    public MockContactImpl(int id, String name, String notes) {}
 
     public int getId() {
         return 1;

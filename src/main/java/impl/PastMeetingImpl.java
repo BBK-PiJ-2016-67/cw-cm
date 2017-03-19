@@ -18,13 +18,13 @@ public final class PastMeetingImpl extends MeetingImpl implements PastMeeting {
     /**
      * Initialises the PastMeetingImpl class.
      *
-     * @param ID          the ID of the contact
+     * @param id          the id of the contact
      * @param date        the date of the meeting
      * @param contacts    a list of attendees
      * @param note        notes for the meeting
      */
-    public PastMeetingImpl(int ID, Calendar date, Set<Contact> contacts, String notes) {
-        super(ID, date, contacts);
+    public PastMeetingImpl(int id, Calendar date, Set<Contact> contacts, String notes) {
+        super(id, date, contacts);
         if (notes == null) {
             throw new NullPointerException("notes cannot be null");
         }

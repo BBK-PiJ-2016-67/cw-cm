@@ -8,36 +8,36 @@ import spec.Contact;
  * @author BBK-PiJ-2016-67
  */
 public final class ContactImpl implements Contact {
-    private final int ID;
+    private final int id;
     private final String name;
     private String notes = "";
 
     /**
      * Initialises the ContactImpl class.
      *
-     * @param ID       the ID of the contact
+     * @param id       the id of the contact
      * @param name     the name of the contact
      */
-    public ContactImpl(int ID, String name) {
-        this(ID, name, "");
+    public ContactImpl(int id, String name) {
+        this(id, name, "");
     }
 
     /**
      * Initialises the ContactImpl class.
      *
-     * @param ID       the ID of the contact
+     * @param id       the id of the contact
      * @param name     the name of the contact
      * @param notes    initial notes about the contact
      */
-    public ContactImpl(int ID, String name, String notes) {
-        if (ID <= 0) {
-            throw new IllegalArgumentException("ID must be greater than zero");
+    public ContactImpl(int id, String name, String notes) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("id must be greater than zero");
         } else if (name == null) {
             throw new NullPointerException("name cannot be null");
         } else if (notes == null) {
             throw new NullPointerException("notes cannot be null");
         }
-        this.ID = ID;
+        this.id = id;
         this.name = name;
         this.notes = notes;
     }
@@ -46,7 +46,7 @@ public final class ContactImpl implements Contact {
      * {@inheritDoc}.
      */
     public int getId() {
-        return this.ID;
+        return this.id;
     }
 
     /**
