@@ -214,9 +214,10 @@ public class ContactManagerTest {
     nearPastDate.add(Calendar.MONTH, -1);
     contactManager.addFutureMeeting(contacts, futureDate);
     contactManager.addNewPastMeeting(contacts, nearPastDate, "good meeting also");
-    assertEquals(3, contactManager.getPastMeetingListFor(contact).size());
-    assertEquals(4, contactManager.getPastMeetingListFor(contact).get(0).getId());
-    assertEquals(1, contactManager.getPastMeetingListFor(contact).get(1).getId());
+    contactManager.addNewPastMeeting(contacts, pastDate, "good meeting as well");
+    assertEquals(4, contactManager.getPastMeetingListFor(contact).size());
+    assertEquals(1, contactManager.getPastMeetingListFor(contact).get(0).getId());
+    assertEquals(4, contactManager.getPastMeetingListFor(contact).get(3).getId());
   }
 
   @Test
