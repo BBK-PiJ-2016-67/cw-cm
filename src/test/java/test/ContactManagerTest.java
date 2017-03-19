@@ -24,6 +24,10 @@ public class ContactManagerTest {
 
   @Before
   public void setUp() {
+    File file = new File("contacts.txt");
+    if (file.exists()) {
+      file.delete();
+    }
     contactManager = new ContactManagerImpl();
     nowDate = Calendar.getInstance();
     pastDate = Calendar.getInstance();
@@ -176,7 +180,7 @@ public class ContactManagerTest {
     oneHourFromNow.add(Calendar.HOUR_OF_DAY, 1);
     contactManager.addFutureMeeting(contacts, oneHourFromNow);
     Calendar twoHourFromNow = Calendar.getInstance();
-    twoHourFromNow.add(Calendar.HOUR_OF_DAY, 2);
+    twoHourFromNow.add(Calendar.HOUR_OF_DAY, 1);
     contactManager.addFutureMeeting(contacts, twoHourFromNow);
 
     assertEquals(2, contactManager.getMeetingListOn(Calendar.getInstance()).size());
@@ -268,7 +272,7 @@ public class ContactManagerTest {
     contactManager.addFutureMeeting(contacts, futureDate);
     contactManager.addFutureMeeting(contacts, futureDate);
     Calendar date = Calendar.getInstance();
-    date.add(Calendar.MILLISECOND, 1);
+    date.add(Calendar.MILLISECOND, 10);
     contactManager.addFutureMeeting(contacts, date);
 
     try {
@@ -376,7 +380,15 @@ public class ContactManagerTest {
 
   @Test
   public void testFlush() {
-    // save data to disk :/
+    contactManager.addFutureMeeting(contacts, futureDate);
+    contactManager.addNewPastMeeting(contacts, pastDate, "good meeting");
+
+    contactManager.flush();
+
+    ContactManager newContactManager = new ContactManagerImpl();
+    assertEquals(1, newContactManager.getContacts(1).size());
+    assertEquals(2, newContactManager.getFutureMeeting(1).getContacts().size());
+    assertEquals("good meeting", newContactManager.getPastMeeting(2).getNotes());
   }
 
 }
