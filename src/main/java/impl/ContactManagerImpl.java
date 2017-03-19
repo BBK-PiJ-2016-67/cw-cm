@@ -76,6 +76,19 @@ public final class ContactManagerImpl implements ContactManager {
   }
 
   /**
+   * Sorts a list of meetings chronologically.
+   *
+   * @param meetings    the meetings to sort
+   */
+  private void sortChronologically(final List<Meeting> meetings) {
+    Collections.sort(meetings, new Comparator<Meeting>(){
+      public int compare(final Meeting meetingOne, final Meeting meetingTwo){
+        return meetingOne.getDate().compareTo(meetingTwo.getDate());
+      }
+    });
+  }
+
+  /**
    * {@inheritDoc}.
    */
   @Override
@@ -99,7 +112,7 @@ public final class ContactManagerImpl implements ContactManager {
    * {@inheritDoc}.
    */
   @Override
-  public PastMeeting getPastMeeting(int id) {
+  public PastMeeting getPastMeeting(final int id) {
     try {
       return (PastMeeting) this.getMeeting(id);
     } catch (Exception e) {
@@ -111,7 +124,7 @@ public final class ContactManagerImpl implements ContactManager {
    * {@inheritDoc}.
    */
   @Override
-  public FutureMeeting getFutureMeeting(int id) {
+  public FutureMeeting getFutureMeeting(final int id) {
     try {
       return (FutureMeeting) this.getMeeting(id);
     } catch (Exception e) {
@@ -123,7 +136,7 @@ public final class ContactManagerImpl implements ContactManager {
    * {@inheritDoc}.
    */
   @Override
-  public Meeting getMeeting(int id) {
+  public Meeting getMeeting(final int id) {
     for (Meeting meeting : this.meetings) {
       if (meeting.getId() == id) {
         return meeting;
@@ -136,13 +149,13 @@ public final class ContactManagerImpl implements ContactManager {
    * {@inheritDoc}.
    */
   @Override
-  public List<Meeting> getFutureMeetingList(Contact contact) {
+  public List<Meeting> getFutureMeetingList(final Contact contact) {
     if (contact == null) {
       throw new NullPointerException(CONTACT_CANNOT_BE_NULL);
     } else if (!this.exists(contact)) {
       throw new IllegalArgumentException(CONTACT_DOES_NOT_EXIST);
     }
-    List<Meeting> meetings = new ArrayList<Meeting>();
+    final List<Meeting> meetings = new ArrayList<Meeting>();
     for (Meeting meeting : this.meetings) {
       if (!(meeting instanceof FutureMeeting)) {
         continue;
@@ -151,11 +164,7 @@ public final class ContactManagerImpl implements ContactManager {
         meetings.add(meeting);
       }
     }
-    Collections.sort(meetings, new Comparator<Meeting>(){
-      public int compare(Meeting meetingOne, Meeting meetingTwo){
-        return meetingOne.getDate().compareTo(meetingTwo.getDate());
-      }
-    });
+    this.sortChronologically(meetings);
     return meetings;
   }
 
@@ -163,28 +172,24 @@ public final class ContactManagerImpl implements ContactManager {
    * {@inheritDoc}.
    */
   @Override
-  public List<Meeting> getMeetingListOn(Calendar date) {
+  public List<Meeting> getMeetingListOn(final Calendar date) {
     if (date == null) {
       throw new NullPointerException(DATE_CANNOT_BE_NULL);
     }
-    List<Meeting> meetings = new ArrayList<Meeting>();
-    int day = date.get(Calendar.DAY_OF_MONTH);
-    int month = date.get(Calendar.MONTH);
-    int year = date.get(Calendar.YEAR);
+    final List<Meeting> meetings = new ArrayList<Meeting>();
+    final int day = date.get(Calendar.DAY_OF_MONTH);
+    final int month = date.get(Calendar.MONTH);
+    final int year = date.get(Calendar.YEAR);
     for (Meeting meeting : this.meetings) {
-      Calendar meetingDate = meeting.getDate();
-      int meetingDay = meetingDate.get(Calendar.DAY_OF_MONTH);
-      int meetingMonth = meetingDate.get(Calendar.MONTH);
-      int meetingYear = meetingDate.get(Calendar.YEAR);
+      final Calendar meetingDate = meeting.getDate();
+      final int meetingDay = meetingDate.get(Calendar.DAY_OF_MONTH);
+      final int meetingMonth = meetingDate.get(Calendar.MONTH);
+      final int meetingYear = meetingDate.get(Calendar.YEAR);
       if (day == meetingDay && month == meetingMonth && year == meetingYear) {
         meetings.add(meeting);
       }
     }
-    Collections.sort(meetings, new Comparator<Meeting>(){
-      public int compare(Meeting meetingOne, Meeting meetingTwo){
-        return meetingOne.getDate().compareTo(meetingTwo.getDate());
-      }
-    });
+    this.sortChronologically(meetings);
     return meetings;
   }
 
@@ -192,16 +197,16 @@ public final class ContactManagerImpl implements ContactManager {
    * {@inheritDoc}.
    */
   @Override
-  public List<PastMeeting> getPastMeetingListFor(Contact contact) {
+  public List<PastMeeting> getPastMeetingListFor(final Contact contact) {
     if (contact == null) {
       throw new NullPointerException(CONTACT_CANNOT_BE_NULL);
     } else if (!this.exists(contact)) {
       throw new IllegalArgumentException(CONTACT_DOES_NOT_EXIST);
     }
-    List<PastMeeting> meetings = new ArrayList<PastMeeting>();
+    final List<PastMeeting> meetings = new ArrayList<PastMeeting>();
     for (Meeting meeting : this.meetings) {
       try {
-        PastMeeting pastMeeting = (PastMeeting) meeting;
+        final PastMeeting pastMeeting = (PastMeeting) meeting;
         if (this.meetingContainsContact(pastMeeting, contact)) {
           meetings.add(pastMeeting);
         }
@@ -209,8 +214,8 @@ public final class ContactManagerImpl implements ContactManager {
         continue;
       }
     }
-    Collections.sort(meetings, new Comparator<PastMeeting>(){
-      public int compare(PastMeeting meetingOne, PastMeeting meetingTwo){
+    Collections.sort(meetings, new Comparator<Meeting>(){
+      public int compare(final Meeting meetingOne, final Meeting meetingTwo){
         return meetingOne.getDate().compareTo(meetingTwo.getDate());
       }
     });
@@ -221,7 +226,7 @@ public final class ContactManagerImpl implements ContactManager {
    * {@inheritDoc}.
    */
   @Override
-  public int addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
+  public int addNewPastMeeting(final Set<Contact> contacts, final Calendar date, final String text) {
     if (contacts == null) {
       throw new NullPointerException(CONTACTS_CANNOT_BE_NULL);
     } else if (date == null) {
@@ -233,8 +238,8 @@ public final class ContactManagerImpl implements ContactManager {
     } else if (!this.exists(contacts)) {
       throw new IllegalArgumentException(CONTACT_DOES_NOT_EXIST);
     }
-    int id = this.meetings.size() + 1;
-    PastMeeting meeting = new PastMeetingImpl(id, date, contacts, text);
+    final int id = this.meetings.size() + 1;
+    final PastMeeting meeting = new PastMeetingImpl(id, date, contacts, text);
     this.meetings.add(meeting);
     return id;
   }
@@ -243,17 +248,17 @@ public final class ContactManagerImpl implements ContactManager {
    * {@inheritDoc}.
    */
   @Override
-  public PastMeeting addMeetingNotes(int id, String text) {
+  public PastMeeting addMeetingNotes(final int id, final String text) {
     if (text == null) {
       throw new NullPointerException("text cannot be null");
     }
-    Meeting meeting = this.getMeeting(id);
+    final Meeting meeting = this.getMeeting(id);
     if (meeting == null) {
       throw new IllegalArgumentException("meeting not found");
     } else if (meeting.getDate().after(Calendar.getInstance())) {
       throw new IllegalStateException("cannot add notes to future meeting");
     }
-    PastMeeting pastMeeting = new PastMeetingImpl(id, meeting.getDate(), meeting.getContacts(), text);
+    final PastMeeting pastMeeting = new PastMeetingImpl(id, meeting.getDate(), meeting.getContacts(), text);
     int index = 0;
     for (Meeting existingMeeting : this.meetings) {
       if (existingMeeting.getId() == id) {
@@ -269,9 +274,9 @@ public final class ContactManagerImpl implements ContactManager {
    * {@inheritDoc}.
    */
   @Override
-  public int addNewContact(String name, String notes) {
-    int id = this.contacts.size() + 1;
-    Contact contact = new ContactImpl(id, name, notes);
+  public int addNewContact(final String name, final String notes) {
+    final int id = this.contacts.size() + 1;
+    final Contact contact = new ContactImpl(id, name, notes);
     if (name.isEmpty()) {
       throw new IllegalArgumentException("name cannot be empty");
     } else if (notes.isEmpty()) {
@@ -285,11 +290,11 @@ public final class ContactManagerImpl implements ContactManager {
    * {@inheritDoc}.
    */
   @Override
-  public Set<Contact> getContacts(String name) {
+  public Set<Contact> getContacts(final String name) {
     if (name == null) {
       throw new NullPointerException("name cannot be null");
     }
-    HashSet<Contact> contacts = new HashSet<Contact>();
+    final HashSet<Contact> contacts = new HashSet<Contact>();
     for (Contact contact : this.contacts) {
       if (name.isEmpty() || name.equals(contact.getName())) {
         contacts.add(contact);
@@ -302,11 +307,11 @@ public final class ContactManagerImpl implements ContactManager {
    * {@inheritDoc}.
    */
   @Override
-  public Set<Contact> getContacts(int... ids) {
+  public Set<Contact> getContacts(final int... ids) {
     if (ids.length == 0) {
       throw new IllegalArgumentException("ids cannot be empty");
     }
-    HashSet<Contact> contacts = new HashSet<Contact>();
+    final HashSet<Contact> contacts = new HashSet<Contact>();
     for (Contact contact : this.contacts) {
       for (int id : ids) {
         if (id == contact.getId()) {
