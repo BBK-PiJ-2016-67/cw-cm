@@ -33,6 +33,8 @@ public class ContactManagerTest {
         contacts = new HashSet<Contact>();
         contacts.add(new MockContactImpl(1, "joe", ""));
         contacts.add(new MockContactImpl(2, "ben", ""));
+        contactManager.addNewContact("joe", "good contact");
+        contactManager.addNewContact("ben", "good contact");
     }
 
     @Test
@@ -42,13 +44,6 @@ public class ContactManagerTest {
         } catch (Exception e) {
             assertTrue(e instanceof NullPointerException);
             assertEquals("contacts cannot be null", e.getMessage());
-        }
-
-        try {
-            contactManager.addFutureMeeting(new HashSet<Contact>(), futureDate);
-        } catch (Exception e) {
-            assertTrue(e instanceof IllegalArgumentException);
-            assertEquals("contacts cannot be empty", e.getMessage());
         }
 
         try {
@@ -238,13 +233,6 @@ public class ContactManagerTest {
         }
 
         try {
-            contactManager.addNewPastMeeting(new HashSet<Contact>(), pastDate, "good meeting");
-        } catch (Exception e) {
-            assertTrue(e instanceof IllegalArgumentException);
-            assertEquals("contacts cannot be empty", e.getMessage());
-        }
-
-        try {
             contactManager.addNewPastMeeting(contacts, null, "good meeting");
         } catch (Exception e) {
             assertTrue(e instanceof NullPointerException);
@@ -337,14 +325,11 @@ public class ContactManagerTest {
             assertEquals("notes cannot be empty", e.getMessage());
         }
 
-        assertEquals(1, contactManager.addNewContact("joe", "good contact"));
+        assertEquals(3, contactManager.addNewContact("joe", "good contact"));
     }
 
     @Test
     public void testGetContacts() {
-        contactManager.addNewContact("joe", "good contact");
-        contactManager.addNewContact("ben", "bad contact");
-
         try {
             String name = null;
             contactManager.getContacts(name);
