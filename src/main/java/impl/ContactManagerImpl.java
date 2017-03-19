@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -28,10 +29,23 @@ public final class ContactManagerImpl implements ContactManager {
   private List<Contact> contacts = new ArrayList<Contact>();
   private List<Meeting> meetings = new ArrayList<Meeting>();
 
+  private static final String CONTACTS_FILE_NAME = "contacts.txt";
+
+  private static final String CANNOT_ADD_NOTES_TO_FUTURE_MEETING = "cannot add notes to future meeting";
   private static final String CONTACT_CANNOT_BE_NULL = "contact cannot be null";
   private static final String CONTACT_DOES_NOT_EXIST = "contact does not exist";
   private static final String CONTACTS_CANNOT_BE_NULL = "contacts cannot be null";
+  private static final String DATE_CANNOT_BE_IN_THE_FUTURE = "date cannot be in the future";
+  private static final String DATE_CANNOT_BE_IN_THE_PAST = "date cannot be in the past";
   private static final String DATE_CANNOT_BE_NULL = "date cannot be null";
+  private static final String FUTURE_MEETING_DATE = "The meeting with this id is happening in the future";
+  private static final String IDS_CANNOT_BE_EMPTY = "ids cannot be empty";
+  private static final String MEETING_NOT_FOUND = "meeting not found";
+  private static final String NAME_CANNOT_BE_EMPTY = "name cannot be empty";
+  private static final String NAME_CANNOT_BE_NULL = "name cannot be null";
+  private static final String NOTES_CANNOT_BE_EMPTY = "notes cannot be empty";
+  private static final String PAST_MEETING_DATE = "The meeting with this id is happening in the past";
+  private static final String TEXT_CANNOT_BE_NULL = "text cannot be null";
 
   /**
    * Initialises the ContactManagerImpl class. If the file
@@ -39,11 +53,10 @@ public final class ContactManagerImpl implements ContactManager {
    * contacts and meetings.
    */
   public ContactManagerImpl() {
-    File contactsFile = new File("contacts.txt");
-    if (!contactsFile.exists()) {
+    if (!(new File(CONTACTS_FILE_NAME).exists())) {
       return;
     }
-    try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("contacts.txt"))) {
+    try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(CONTACTS_FILE_NAME))) {
       this.contacts = (List<Contact>) (inputStream.readObject());
       this.meetings = (List<Meeting>) (inputStream.readObject());
     } catch (Exception e) {
@@ -121,7 +134,7 @@ public final class ContactManagerImpl implements ContactManager {
     } else if (date == null) {
       throw new NullPointerException(DATE_CANNOT_BE_NULL);
     } else if (!date.after(Calendar.getInstance())) {
-      throw new IllegalArgumentException("date cannot be in the past");
+      throw new IllegalArgumentException(DATE_CANNOT_BE_IN_THE_PAST);
     } else if (!this.exists(contacts)) {
       throw new IllegalArgumentException(CONTACT_DOES_NOT_EXIST);
     }
@@ -139,7 +152,7 @@ public final class ContactManagerImpl implements ContactManager {
     try {
       return (PastMeeting) this.getMeeting(id);
     } catch (Exception e) {
-      throw new IllegalStateException("The meeting with this id is happening in the future");
+      throw new IllegalStateException(FUTURE_MEETING_DATE);
     }
   }
 
@@ -151,7 +164,7 @@ public final class ContactManagerImpl implements ContactManager {
     try {
       return (FutureMeeting) this.getMeeting(id);
     } catch (Exception e) {
-      throw new IllegalStateException("The meeting with this id is happening in the past");
+      throw new IllegalStateException(PAST_MEETING_DATE);
     }
   }
 
@@ -200,15 +213,12 @@ public final class ContactManagerImpl implements ContactManager {
       throw new NullPointerException(DATE_CANNOT_BE_NULL);
     }
     final List<Meeting> meetings = new ArrayList<Meeting>();
-    final int day = date.get(Calendar.DAY_OF_MONTH);
-    final int month = date.get(Calendar.MONTH);
-    final int year = date.get(Calendar.YEAR);
+    final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    final String formattedDate = dateFormat.format(date.getTime());
     for (Meeting meeting : this.meetings) {
       final Calendar meetingDate = meeting.getDate();
-      final int meetingDay = meetingDate.get(Calendar.DAY_OF_MONTH);
-      final int meetingMonth = meetingDate.get(Calendar.MONTH);
-      final int meetingYear = meetingDate.get(Calendar.YEAR);
-      if (day == meetingDay && month == meetingMonth && year == meetingYear) {
+      final String formattedMeetingDate = dateFormat.format(meetingDate.getTime());
+      if (formattedDate.equals(formattedMeetingDate)) {
         meetings.add(meeting);
       }
     }
@@ -255,9 +265,9 @@ public final class ContactManagerImpl implements ContactManager {
     } else if (date == null) {
       throw new NullPointerException(DATE_CANNOT_BE_NULL);
     } else if (date.after(Calendar.getInstance())) {
-      throw new IllegalArgumentException("date cannot be in the future");
+      throw new IllegalArgumentException(DATE_CANNOT_BE_IN_THE_FUTURE);
     } else if (text == null) {
-      throw new NullPointerException("text cannot be null");
+      throw new NullPointerException(TEXT_CANNOT_BE_NULL);
     } else if (!this.exists(contacts)) {
       throw new IllegalArgumentException(CONTACT_DOES_NOT_EXIST);
     }
@@ -273,13 +283,13 @@ public final class ContactManagerImpl implements ContactManager {
   @Override
   public PastMeeting addMeetingNotes(final int id, final String text) {
     if (text == null) {
-      throw new NullPointerException("text cannot be null");
+      throw new NullPointerException(TEXT_CANNOT_BE_NULL);
     }
     final Meeting meeting = this.getMeeting(id);
     if (meeting == null) {
-      throw new IllegalArgumentException("meeting not found");
+      throw new IllegalArgumentException(MEETING_NOT_FOUND);
     } else if (meeting.getDate().after(Calendar.getInstance())) {
-      throw new IllegalStateException("cannot add notes to future meeting");
+      throw new IllegalStateException(CANNOT_ADD_NOTES_TO_FUTURE_MEETING);
     }
     final PastMeeting pastMeeting = new PastMeetingImpl(id, meeting.getDate(), meeting.getContacts(), text);
     int index = 0;
@@ -301,9 +311,9 @@ public final class ContactManagerImpl implements ContactManager {
     final int id = this.contacts.size() + 1;
     final Contact contact = new ContactImpl(id, name, notes);
     if (name.isEmpty()) {
-      throw new IllegalArgumentException("name cannot be empty");
+      throw new IllegalArgumentException(NAME_CANNOT_BE_EMPTY);
     } else if (notes.isEmpty()) {
-      throw new IllegalArgumentException("notes cannot be empty");
+      throw new IllegalArgumentException(NOTES_CANNOT_BE_EMPTY);
     }
     this.contacts.add(contact);
     return id;
@@ -315,7 +325,7 @@ public final class ContactManagerImpl implements ContactManager {
   @Override
   public Set<Contact> getContacts(final String name) {
     if (name == null) {
-      throw new NullPointerException("name cannot be null");
+      throw new NullPointerException(NAME_CANNOT_BE_NULL);
     }
     final HashSet<Contact> contacts = new HashSet<Contact>();
     for (Contact contact : this.contacts) {
@@ -332,7 +342,7 @@ public final class ContactManagerImpl implements ContactManager {
   @Override
   public Set<Contact> getContacts(final int... ids) {
     if (ids.length == 0) {
-      throw new IllegalArgumentException("ids cannot be empty");
+      throw new IllegalArgumentException(IDS_CANNOT_BE_EMPTY);
     }
     final HashSet<Contact> contacts = new HashSet<Contact>();
     for (Contact contact : this.contacts) {
@@ -353,7 +363,7 @@ public final class ContactManagerImpl implements ContactManager {
    */
   @Override
   public void flush() {
-    try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("contacts.txt"))) {
+    try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(CONTACTS_FILE_NAME))) {
       outputStream.writeObject(this.contacts);
       outputStream.writeObject(this.meetings);
     } catch (Exception e) {

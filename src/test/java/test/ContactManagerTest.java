@@ -177,10 +177,10 @@ public class ContactManagerTest {
     assertEquals(0, contactManager.getMeetingListOn(Calendar.getInstance()).size());
 
     Calendar oneHourFromNow = Calendar.getInstance();
-    oneHourFromNow.add(Calendar.HOUR_OF_DAY, 1);
+    oneHourFromNow.add(Calendar.MINUTE, 1);
     contactManager.addFutureMeeting(contacts, oneHourFromNow);
     Calendar twoHourFromNow = Calendar.getInstance();
-    twoHourFromNow.add(Calendar.HOUR_OF_DAY, 1);
+    twoHourFromNow.add(Calendar.MINUTE, 2);
     contactManager.addFutureMeeting(contacts, twoHourFromNow);
 
     assertEquals(2, contactManager.getMeetingListOn(Calendar.getInstance()).size());
