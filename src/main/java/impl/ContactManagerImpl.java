@@ -26,7 +26,8 @@ public final class ContactManagerImpl implements ContactManager {
     /**
      * Determines whether a contact exists.
      *
-     * @return whether the contact exists.
+     * @param contact    the contact to find
+     * @return           whether the contact exists
      */
     private boolean exists(Contact contact) {
         if (contact == null) {
@@ -44,7 +45,8 @@ public final class ContactManagerImpl implements ContactManager {
      * Determines whether all contacts within a set of
      * contacts exist.
      *
-     * @return whether all contacts exist.
+     * @param contacts    the contacts to find
+     * @return            whether all contacts exist
      */
     private boolean exists(Set<Contact> contacts) {
         if (contacts == null) {
@@ -56,6 +58,25 @@ public final class ContactManagerImpl implements ContactManager {
             }
         }
         return true;
+    }
+
+    /**
+     * Determines whether a meeting contains a contact.
+     *
+     * @param meeting    the meeting to look in
+     * @param contact    the contact to find
+     * @return           whether the meeting contains the contact
+     */
+    private boolean meetingContainsContact(Meeting meeting, Contact contact) {
+        if (meeting == null || contact == null) {
+            return false;
+        }
+        for (Contact meetingContact : meeting.getContacts()) {
+            if (contact.getId() == meetingContact.getId()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -131,11 +152,8 @@ public final class ContactManagerImpl implements ContactManager {
             if (!(meeting instanceof FutureMeeting)) {
                 continue;
             }
-            for (Contact meetingContact : meeting.getContacts()) {
-                if (contact.getId() == meetingContact.getId()) {
-                    meetings.add(meeting);
-                    break;
-                }
+            if (this.meetingContainsContact(meeting, contact)) {
+                meetings.add(meeting);
             }
         }
         Collections.sort(meetings, new Comparator<Meeting>(){
@@ -190,11 +208,8 @@ public final class ContactManagerImpl implements ContactManager {
         for (Meeting meeting : this.meetings) {
             try {
                 PastMeeting pastMeeting = (PastMeeting) meeting;
-                for (Contact meetingContact : pastMeeting.getContacts()) {
-                    if (contact.getId() == meetingContact.getId()) {
-                        meetings.add(pastMeeting);
-                        break;
-                    }
+                if (this.meetingContainsContact(pastMeeting, contact)) {
+                    meetings.add(pastMeeting);
                 }
             } catch (Exception e) {
                 continue;
