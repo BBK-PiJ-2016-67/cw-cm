@@ -33,14 +33,14 @@ public class FutureMeetingTest {
             new FutureMeetingImpl(-1, nowDate, contacts);
         } catch (Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
-            assertEquals("ID must be greater than zero", e.getMessage());
+            assertEquals("id must be greater than zero", e.getMessage());
         }
 
         try {
             new FutureMeetingImpl(0, nowDate, contacts);
         } catch (Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
-            assertEquals("ID must be greater than zero", e.getMessage());
+            assertEquals("id must be greater than zero", e.getMessage());
         }
 
         try {

@@ -21,14 +21,14 @@ public class ContactTest {
             new ContactImpl(-1, "joe");
         } catch (Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
-            assertEquals("ID must be greater than zero", e.getMessage());
+            assertEquals("id must be greater than zero", e.getMessage());
         }
 
         try {
             new ContactImpl(0, "joe");
         } catch (Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
-            assertEquals("ID must be greater than zero", e.getMessage());
+            assertEquals("id must be greater than zero", e.getMessage());
         }
 
         try {

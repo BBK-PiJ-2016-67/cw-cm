@@ -34,14 +34,14 @@ public class PastMeetingTest {
             new PastMeetingImpl(-1, pastDate, contacts, "");
         } catch (Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
-            assertEquals("ID must be greater than zero", e.getMessage());
+            assertEquals("id must be greater than zero", e.getMessage());
         }
 
         try {
             new PastMeetingImpl(0, pastDate, contacts, "");
         } catch (Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
-            assertEquals("ID must be greater than zero", e.getMessage());
+            assertEquals("id must be greater than zero", e.getMessage());
         }
 
         try {
