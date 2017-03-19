@@ -24,7 +24,9 @@ public final class ContactManagerImpl implements ContactManager {
     private List<Meeting> meetings = new ArrayList<Meeting>();
 
     /**
+     * Determines whether a contact exists.
      *
+     * @return whether the contact exists.
      */
     private boolean exists(Contact contact) {
         if (contact == null) {
@@ -39,7 +41,10 @@ public final class ContactManagerImpl implements ContactManager {
     }
 
     /**
+     * Determines whether all contacts within a set of
+     * contacts exist.
      *
+     * @return whether all contacts exist.
      */
     private boolean exists(Set<Contact> contacts) {
         if (contacts == null) {
@@ -119,14 +124,7 @@ public final class ContactManagerImpl implements ContactManager {
         if (contact == null) {
             throw new NullPointerException("contact cannot be null");
         }
-        boolean contactExists = false;
-        for (Contact existingContact : this.contacts) {
-            if (contact.getId() == existingContact.getId()) {
-                contactExists = true;
-                break;
-            }
-        }
-        if (!contactExists) {
+        if (!this.exists(contact)) {
             throw new IllegalArgumentException("contact does not exist");
         }
         List<Meeting> meetings = new ArrayList<Meeting>();
@@ -184,14 +182,7 @@ public final class ContactManagerImpl implements ContactManager {
         if (contact == null) {
             throw new NullPointerException("contact cannot be null");
         }
-        boolean contactExists = false;
-        for (Contact existingContact : this.contacts) {
-            if (contact.getId() == existingContact.getId()) {
-                contactExists = true;
-                break;
-            }
-        }
-        if (!contactExists) {
+        if (!this.exists(contact)) {
             throw new IllegalArgumentException("contact does not exist");
         }
         List<PastMeeting> meetings = new ArrayList<PastMeeting>();
