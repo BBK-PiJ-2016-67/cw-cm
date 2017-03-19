@@ -6,6 +6,11 @@ import spec.FutureMeeting;
 import spec.Meeting;
 import spec.PastMeeting;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -20,13 +25,31 @@ import java.util.Set;
  * @author BBK-PiJ-2016-67
  */
 public final class ContactManagerImpl implements ContactManager {
-  private final List<Contact> contacts = new ArrayList<Contact>();
-  private final List<Meeting> meetings = new ArrayList<Meeting>();
+  private List<Contact> contacts = new ArrayList<Contact>();
+  private List<Meeting> meetings = new ArrayList<Meeting>();
 
   private static final String CONTACT_CANNOT_BE_NULL = "contact cannot be null";
   private static final String CONTACT_DOES_NOT_EXIST = "contact does not exist";
   private static final String CONTACTS_CANNOT_BE_NULL = "contacts cannot be null";
   private static final String DATE_CANNOT_BE_NULL = "date cannot be null";
+
+  /**
+   * Initialises the ContactManagerImpl class. If the file
+   * contacts.txt exists, the contents will be used to populate
+   * contacts and meetings.
+   */
+  public ContactManagerImpl() {
+    File contactsFile = new File("contacts.txt");
+    if (!contactsFile.exists()) {
+      return;
+    }
+    try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("contacts.txt"))) {
+      this.contacts = (List<Contact>) (inputStream.readObject());
+      this.meetings = (List<Meeting>) (inputStream.readObject());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 
   /**
    * Determines whether a contact exists.
@@ -330,6 +353,11 @@ public final class ContactManagerImpl implements ContactManager {
    */
   @Override
   public void flush() {
-    
+    try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("contacts.txt"))) {
+      outputStream.writeObject(this.contacts);
+      outputStream.writeObject(this.meetings);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 }

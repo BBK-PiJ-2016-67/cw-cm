@@ -2,12 +2,14 @@ package impl;
 
 import spec.Contact;
 
+import java.io.Serializable;
+
 /**
  * ContactImpl is a class implementing {@see Contact}.
  *
  * @author BBK-PiJ-2016-67
  */
-public final class ContactImpl implements Contact {
+public final class ContactImpl implements Contact, Serializable {
   private final int id;
   private final String name;
   private String notes = "";
