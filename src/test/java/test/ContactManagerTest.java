@@ -1,6 +1,6 @@
 package test;
 
-import impl.MockContactImpl;
+import impl.ContactImpl;
 import impl.ContactManagerImpl;
 import impl.FutureMeetingImpl;
 import impl.PastMeetingImpl;
@@ -31,8 +31,8 @@ public class ContactManagerTest {
     futureDate = Calendar.getInstance();
     futureDate.add(Calendar.YEAR, 1);
     contacts = new HashSet<Contact>();
-    contacts.add(new MockContactImpl(1, "joe", ""));
-    contacts.add(new MockContactImpl(2, "ben", ""));
+    contacts.add(new ContactImpl(1, "joe", ""));
+    contacts.add(new ContactImpl(2, "ben", ""));
     contactManager.addNewContact("joe", "good contact");
     contactManager.addNewContact("ben", "good contact");
   }
@@ -58,6 +58,15 @@ public class ContactManagerTest {
     } catch (Exception e) {
       assertTrue(e instanceof IllegalArgumentException);
       assertEquals("date cannot be in the past", e.getMessage());
+    }
+
+    try {
+      HashSet<Contact> newContacts = new HashSet<Contact>();
+      newContacts.add(new ContactImpl(5, "sam", ""));
+      contactManager.addFutureMeeting(newContacts, futureDate);
+    } catch (Exception e) {
+      assertTrue(e instanceof IllegalArgumentException);
+      assertEquals("contact does not exist", e.getMessage());
     }
 
     assertEquals(1, contactManager.addFutureMeeting(contacts, futureDate));
@@ -117,7 +126,15 @@ public class ContactManagerTest {
       assertEquals("contact cannot be null", e.getMessage());
     }
 
-    Contact contact = new MockContactImpl(1, "joe", "");
+    try {
+      Contact contact = new ContactImpl(5, "sam", "");
+      contactManager.getFutureMeetingList(contact);
+    } catch (Exception e) {
+      assertTrue(e instanceof IllegalArgumentException);
+      assertEquals("contact does not exist", e.getMessage());
+    }
+
+    Contact contact = new ContactImpl(1, "joe", "");
 
     try {
       contactManager.getFutureMeetingList(contact);
@@ -126,19 +143,22 @@ public class ContactManagerTest {
       assertEquals("contact does not exist", e.getMessage());
     }
 
-    contactManager.addNewContact("joe", "good contact");
     assertEquals(0, contactManager.getFutureMeetingList(contact).size());
 
-    contactManager.addFutureMeeting(contacts, futureDate);
-    assertEquals(1, contactManager.getFutureMeetingList(contact).size());
+    HashSet<Contact> newContacts = new HashSet<Contact>();
+    newContacts.add(contact);
+    contactManager.addNewPastMeeting(newContacts, pastDate, "good meeting");
+    contactManager.addNewPastMeeting(contacts, pastDate, "good meeting");
+    assertEquals(1, contactManager.getPastMeetingListFor(new ContactImpl(2, "ben", "")).size());
 
     Calendar nearFutureDate = Calendar.getInstance();
     nearFutureDate.add(Calendar.MONTH, 1);
     contactManager.addNewPastMeeting(contacts, pastDate, "good meeting");
+    contactManager.addFutureMeeting(contacts, futureDate);
     contactManager.addFutureMeeting(contacts, nearFutureDate);
     assertEquals(2, contactManager.getFutureMeetingList(contact).size());
-    assertEquals(3, contactManager.getFutureMeetingList(contact).get(0).getId());
-    assertEquals(1, contactManager.getFutureMeetingList(contact).get(1).getId());
+    assertEquals(5, contactManager.getFutureMeetingList(contact).get(0).getId());
+    assertEquals(4, contactManager.getFutureMeetingList(contact).get(1).getId());
   }
 
   @Test
@@ -171,27 +191,31 @@ public class ContactManagerTest {
       assertEquals("contact cannot be null", e.getMessage());
     }
 
-    Contact contact = new MockContactImpl(1, "joe", "");
-
     try {
+      Contact contact = new ContactImpl(5, "sam", "");
       contactManager.getPastMeetingListFor(contact);
     } catch (Exception e) {
       assertTrue(e instanceof IllegalArgumentException);
       assertEquals("contact does not exist", e.getMessage());
     }
 
+    Contact contact = new ContactImpl(1, "joe", "");
+
     contactManager.addNewContact("joe", "good contact");
     assertEquals(0, contactManager.getPastMeetingListFor(contact).size());
 
+    HashSet<Contact> newContacts = new HashSet<Contact>();
+    newContacts.add(contact);
+    contactManager.addNewPastMeeting(newContacts, pastDate, "good meeting");
     contactManager.addNewPastMeeting(contacts, pastDate, "good meeting");
-    assertEquals(1, contactManager.getPastMeetingListFor(contact).size());
+    assertEquals(1, contactManager.getPastMeetingListFor(new ContactImpl(2, "ben", "")).size());
 
     Calendar nearPastDate = Calendar.getInstance();
     nearPastDate.add(Calendar.MONTH, -1);
     contactManager.addFutureMeeting(contacts, futureDate);
     contactManager.addNewPastMeeting(contacts, nearPastDate, "good meeting also");
-    assertEquals(2, contactManager.getPastMeetingListFor(contact).size());
-    assertEquals(3, contactManager.getPastMeetingListFor(contact).get(0).getId());
+    assertEquals(3, contactManager.getPastMeetingListFor(contact).size());
+    assertEquals(4, contactManager.getPastMeetingListFor(contact).get(0).getId());
     assertEquals(1, contactManager.getPastMeetingListFor(contact).get(1).getId());
   }
 
@@ -223,6 +247,15 @@ public class ContactManagerTest {
     } catch (Exception e) {
       assertTrue(e instanceof NullPointerException);
       assertEquals("text cannot be null", e.getMessage());
+    }
+
+    try {
+      HashSet<Contact> newContacts = new HashSet<Contact>();
+      newContacts.add(new ContactImpl(5, "sam", ""));
+      contactManager.addNewPastMeeting(newContacts, pastDate, "good meeting");
+    } catch (Exception e) {
+      assertTrue(e instanceof IllegalArgumentException);
+      assertEquals("contact does not exist", e.getMessage());
     }
 
     assertEquals(1, contactManager.addNewPastMeeting(contacts, pastDate, "good meeting"));
@@ -333,7 +366,7 @@ public class ContactManagerTest {
     assertEquals(2, contactManager.getContacts(1, 2).size());
 
     try {
-      contactManager.getContacts(3);
+      contactManager.getContacts(5);
     } catch (Exception e) {
       assertTrue(e instanceof IllegalArgumentException);
       assertEquals("contact does not exist", e.getMessage());

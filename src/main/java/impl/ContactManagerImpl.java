@@ -30,9 +30,6 @@ public final class ContactManagerImpl implements ContactManager {
    * @return           whether the contact exists
    */
   private boolean exists(Contact contact) {
-    if (contact == null) {
-      return false;
-    }
     for (Contact existingContact : this.contacts) {
       if (contact.getId() == existingContact.getId()) {
         return true;
@@ -49,9 +46,6 @@ public final class ContactManagerImpl implements ContactManager {
    * @return            whether all contacts exist
    */
   private boolean exists(Set<Contact> contacts) {
-    if (contacts == null) {
-      return false;
-    }
     for (Contact contact : contacts) {
       if (!this.exists(contact)) {
         return false;
@@ -68,9 +62,6 @@ public final class ContactManagerImpl implements ContactManager {
    * @return           whether the meeting contains the contact
    */
   private boolean meetingContainsContact(Meeting meeting, Contact contact) {
-    if (meeting == null || contact == null) {
-      return false;
-    }
     for (Contact meetingContact : meeting.getContacts()) {
       if (contact.getId() == meetingContact.getId()) {
         return true;
@@ -143,8 +134,7 @@ public final class ContactManagerImpl implements ContactManager {
   public List<Meeting> getFutureMeetingList(Contact contact) {
     if (contact == null) {
       throw new NullPointerException("contact cannot be null");
-    }
-    if (!this.exists(contact)) {
+    } else if (!this.exists(contact)) {
       throw new IllegalArgumentException("contact does not exist");
     }
     List<Meeting> meetings = new ArrayList<Meeting>();
@@ -200,8 +190,7 @@ public final class ContactManagerImpl implements ContactManager {
   public List<PastMeeting> getPastMeetingListFor(Contact contact) {
     if (contact == null) {
       throw new NullPointerException("contact cannot be null");
-    }
-    if (!this.exists(contact)) {
+    } else if (!this.exists(contact)) {
       throw new IllegalArgumentException("contact does not exist");
     }
     List<PastMeeting> meetings = new ArrayList<PastMeeting>();
@@ -217,7 +206,7 @@ public final class ContactManagerImpl implements ContactManager {
     }
     Collections.sort(meetings, new Comparator<PastMeeting>(){
       public int compare(PastMeeting meetingOne, PastMeeting meetingTwo){
-        return meetingTwo.getDate().compareTo(meetingOne.getDate());
+        return meetingOne.getDate().compareTo(meetingTwo.getDate());
       }
     });
     return meetings;
