@@ -322,11 +322,11 @@ public class ContactManagerTest {
         contactManager.addNewContact("ben", "bad contact");
 
         try {
-            int[] ids = null;
+            int[] ids = new int[0];
             contactManager.getContacts(ids);
         } catch (Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
-            assertEquals("ids cannot be null", e.getMessage());
+            assertEquals("ids cannot be empty", e.getMessage());
         }
 
         assertEquals(1, contactManager.getContacts(1).size());

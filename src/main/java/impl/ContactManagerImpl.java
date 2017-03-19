@@ -294,8 +294,8 @@ public final class ContactManagerImpl implements ContactManager {
      */
     @Override
     public Set<Contact> getContacts(int... ids) {
-        if (ids == null) {
-            throw new IllegalArgumentException("ids cannot be null");
+        if (ids.length == 0) {
+            throw new IllegalArgumentException("ids cannot be empty");
         }
         HashSet<Contact> contacts = new HashSet<Contact>();
         for (Contact contact : this.contacts) {
