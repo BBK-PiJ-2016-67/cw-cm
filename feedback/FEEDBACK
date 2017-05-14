@@ -1,1 +1,35 @@
+Please look at the general comments to see if any apply.
 
+Add javadoc for private methods and fields.
+
+A good set of tests.
+
+If a method has a throw statement in it then consider using a 
+"throws" clause in the method signature even if the method is 
+unchecked.
+
+Some people prefer separate "if" statements for the following:
+
+if (id <= 0) {
+      throw new IllegalArgumentException("id must be greater than zero");
+    } else if (date == null) {
+      throw new NullPointerException("date cannot be null");
+    } else if (contacts == null) {
+      throw new NullPointerException("contacts cannot be null");
+    } else if (contacts.isEmpty()) {
+      throw new IllegalArgumentException("contacts cannot be empty");
+    }
+
+as they are testing different things.
+
+Maybe extract the constants from CMImpl to a separate class.
+
+Some similarity in the structure of the code which suggests that
+this is a candidate for refactoring. Also, perhaps consider Java 8
+constructs going forward.
+
+You can simplify the reading and writing of the objects by making
+the containing class serialisable rather than reading and writing
+the collections.
+
+A good attempt. Distinction.
